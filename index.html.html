@@ -443,6 +443,7 @@
     .section { padding: 18px; }
   }
 </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -608,49 +609,93 @@
   <div class="section">
     <div class="section-title"><span class="icon">📝</span> Reserve Your Seat</div>
 
-    <form action="YOUR_GOOGLE_FORM_URL" method="POST" target="_blank">
+    <form action="https://docs.google.com/forms/d/e/1FAIpQLScl4yGIuQTlfE_vAJjFv_FEh8updma0BiN4fKYRoKAC5XZCxw/formResponse" method="POST" target="_blank">
+
+      <!-- First Name -->
       <div class="form-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" name="entry.NAME_FIELD_ID" placeholder="Enter your full name" required>
+        <label for="firstname">First Name</label>
+        <input type="text" id="firstname" name="entry.642135503" placeholder="Enter your first name" required>
       </div>
 
+      <!-- Last Name -->
       <div class="form-group">
-        <label for="email">Best Email Address</label>
-        <input type="email" id="email" name="entry.EMAIL_FIELD_ID" placeholder="you@example.com" required>
+        <label for="lastname">Last Name</label>
+        <input type="text" id="lastname" name="entry.204257446" placeholder="Enter your last name" required>
       </div>
 
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="entry.1556369182" placeholder="you@example.com" required>
+      </div>
+
+      <!-- Phone -->
       <div class="form-group">
         <label for="phone">Mobile Number</label>
-        <input type="tel" id="phone" name="entry.PHONE_FIELD_ID" placeholder="(555) 123-4567" required>
+        <input type="tel" id="phone" name="entry.1073630673" placeholder="(555) 123-4567" required>
       </div>
 
-      <!-- DATE SELECTOR -->
+      <!-- Certificate Choice -->
       <div class="form-group">
-        <label for="date-select">Select Your Date</label>
-        <select id="date-select" name="entry.DATE_FIELD_ID" required>
+        <label for="certificate">Choose Your Preferred Certificate</label>
+        <select id="certificate" name="entry.1753222212" required>
+          <option value="" disabled selected>Select your certificate...</option>
+          <option value="5-day/4-night CRUISE certificate for 2 (valid for 24 months) | Carnival, Royal Caribbean, Norwegian or Princess | Miami ➝ Cozumel, Los Angeles ➝ Ensenada, Mexico, Port Canaveral ➝ Nassau, Bahamas">5-Day/4-Night Cruise Certificate for 2</option>
+          <option value="6-day/5-night Premium HAWAII Hotel certificate for 2 (valid for 18 months) | Valid in Oahu — experience world-famous Waikiki Beach, vibrant nightlife, shopping, and dining">6-Day/5-Night Hawaii Hotel Certificate</option>
+          <option value="4-day/3-night Luxury U.S. Hotel stay certificate for 2 (valid for 18 months) | 35+ premier U.S. destinations. Powered by RedeemVacations.com">4-Day/3-Night Luxury U.S. Hotel Stay</option>
+          <option value="6-day/5-nights PUERTO PLATA Beach Front Resort, Dominican Republic - All inclusive (valid for 18 months)">6-Day/5-Night Puerto Plata All-Inclusive Resort</option>
+          <option value="6D/5N stay in Cancun, Riviera Maya or Puerto Vallarta OR 5D/4N stay in Cabo San Lucas">Mexico Getaway — Cancun, Riviera Maya, Puerto Vallarta or Cabo</option>
+        </select>
+      </div>
+
+      <!-- Device Type -->
+      <div class="form-group">
+        <label for="device">What device will you use to join?</label>
+        <select id="device" name="entry.1572570997" required>
+          <option value="" disabled selected>Select your device...</option>
+          <option value="Yes – Laptop/Desktop/Tablet (Eligible for $100 Rewards Certificate on top)">Yes – Laptop/Desktop/Tablet (Eligible for $100 Rewards Certificate)</option>
+          <option value="Mobile Phone Only (No $100 Rewards Certificate)">Mobile Phone Only (No $100 Rewards Certificate)</option>
+        </select>
+      </div>
+
+      <!-- Date -->
+      <div class="form-group">
+        <label for="date">Select Your Date</label>
+        <select id="date" name="entry.603218226" required>
           <option value="" disabled selected>Loading available dates...</option>
         </select>
       </div>
 
+      <!-- Time Zone -->
       <div class="form-group">
         <label for="timezone">Your Time Zone</label>
-        <select id="timezone" name="entry.TIMEZONE_FIELD_ID" required onchange="updateTimes()">
+        <select id="timezone" name="entry.1249610350" required onchange="updateTimes()">
           <option value="" disabled selected>Select your time zone...</option>
-          <option value="eastern">Eastern (ET)</option>
-          <option value="central">Central (CT)</option>
-          <option value="mountain">Mountain (MT)</option>
-          <option value="pacific">Pacific (PT)</option>
-          <option value="alaska">Alaska (AKT)</option>
-          <option value="hawaii">Hawaii (HT)</option>
+          <option value="Eastern (EDT) – NY, FL, GA, SC, NC, VA, WV, PA, OH, MI, IN, KY, TN, ME, VT, NH, MA, RI, CT, NJ, DE, MD, DC">Eastern (EDT)</option>
+          <option value="Central (CDT) – TX, OK, KS, NE, SD, ND, MN, IA, MO, AR, LA, MS, AL, WI, IL, TN, KY, IN, MI, FL">Central (CDT)</option>
+          <option value="Mountain (MDT) – AZ, CO, UT, NM, WY, MT, ID, OR, WA, NV, CA">Mountain (MDT)</option>
+          <option value="Pacific (PDT) – CA, OR, WA, NV, AZ">Pacific (PDT)</option>
+          <option value="Alaska (AKDT) – AK">Alaska (AKDT)</option>
+          <option value="Hawaii (HST) – HI">Hawaii (HST)</option>
         </select>
       </div>
 
+      <!-- Session Time -->
       <div class="form-group">
         <label for="session">Preferred Session Time</label>
-        <select id="session" name="entry.SESSION_FIELD_ID" required>
+        <select id="session" name="entry.1170556109" required>
           <option value="" disabled selected>Select your time zone first...</option>
         </select>
         <p class="timezone-note">All times shown are based on your selected time zone.</p>
+      </div>
+
+      <!-- Attendance Confirmation -->
+      <div class="form-group">
+        <label for="attendance">Attendance Confirmation</label>
+        <select id="attendance" name="entry.2020979342" required>
+          <option value="" disabled selected>Confirm your attendance...</option>
+          <option value="Yes, I will attend at my selected time.">Yes, I will attend at my selected time.</option>
+        </select>
       </div>
 
       <button type="submit" class="submit-btn">Reserve My Seat →</button>
@@ -700,17 +745,17 @@
 <script>
   // Time zone offsets from Eastern (in hours)
   const tzOffsets = {
-    eastern: 0,
-    central: -1,
-    mountain: -2,
-    pacific: -3,
-    alaska: -4,
-    hawaii: -6
+    "Eastern (EDT) – NY, FL, GA, SC, NC, VA, WV, PA, OH, MI, IN, KY, TN, ME, VT, NH, MA, RI, CT, NJ, DE, MD, DC": 0,
+    "Central (CDT) – TX, OK, KS, NE, SD, ND, MN, IA, MO, AR, LA, MS, AL, WI, IL, TN, KY, IN, MI, FL": -1,
+    "Mountain (MDT) – AZ, CO, UT, NM, WY, MT, ID, OR, WA, NV, CA": -2,
+    "Pacific (PDT) – CA, OR, WA, NV, AZ": -3,
+    "Alaska (AKDT) – AK": -4,
+    "Hawaii (HST) – HI": -6
   };
 
   // Generate times for a given time zone (Eastern reference: 2:00 PM to 8:30 PM)
-  function generateTimes(tz) {
-    const offset = tzOffsets[tz] || 0;
+  function generateTimes(tzValue) {
+    const offset = tzOffsets[tzValue] || 0;
     const times = [];
     const easternStart = 14 * 60; // 14:00 in minutes
     const easternEnd = 20 * 60 + 30; // 20:30 in minutes
@@ -723,26 +768,40 @@
       const ampm = h >= 12 ? 'PM' : 'AM';
       const displayH = h > 12 ? h - 12 : (h === 0 ? 12 : h);
       const displayM = m === 0 ? '00' : m;
-      times.push(`${displayH}:${displayM} ${ampm}`);
+
+      // Calculate corresponding ET for display
+      const etH = Math.floor(t / 60);
+      const etM = t % 60;
+      const etAmpm = etH >= 12 ? 'PM' : 'AM';
+      const etDisplayH = etH > 12 ? etH - 12 : (etH === 0 ? 12 : etH);
+      const etDisplayM = etM === 0 ? '00' : etM;
+
+      times.push({
+        local: `${displayH}:${displayM} ${ampm}`,
+        et: `${etDisplayH}:${etDisplayM} ${etAmpm}`
+      });
     }
     return times;
   }
 
   function updateTimes() {
-    const tz = document.getElementById('timezone').value;
+    const tzSelect = document.getElementById('timezone');
+    const tzValue = tzSelect.value;
     const sessionSelect = document.getElementById('session');
 
-    if (!tz) {
+    if (!tzValue) {
       sessionSelect.innerHTML = '<option value="" disabled selected>Select your time zone first...</option>';
       return;
     }
 
-    const times = generateTimes(tz);
+    const times = generateTimes(tzValue);
     sessionSelect.innerHTML = '<option value="" disabled selected>Select your time...</option>';
+
     times.forEach(time => {
       const option = document.createElement('option');
-      option.value = time;
-      option.textContent = time;
+      // Format matches your Google Form: "1:00 PM (9:00 AM HST)"
+      option.value = `${time.local} (${time.et} ET)`;
+      option.textContent = `${time.local} (${time.et} ET)`;
       sessionSelect.appendChild(option);
     });
   }
@@ -751,7 +810,7 @@
   function initDateSelector() {
     const now = new Date();
 
-    // Get current time in Eastern Time using proper timezone conversion
+    // Get current time in Eastern Time
     const etFormatter = new Intl.DateTimeFormat('en-US', {
       timeZone: 'America/New_York',
       hour: 'numeric',
@@ -770,7 +829,7 @@
       "July", "August", "September", "October", "November", "December"];
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-    const dateSelect = document.getElementById('date-select');
+    const dateSelect = document.getElementById('date');
     dateSelect.innerHTML = '';
 
     // Check if it's past 8:15 PM ET

@@ -1,280 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Travel Savings Presentation</title>
+<title>Travel Webinar</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-    color: #fff;
-    min-height: 100vh;
-    line-height: 1.6;
-  }
-  .container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  .urgency-bar {
-    background: rgba(231,76,60,0.2);
-    border: 1px solid rgba(231,76,60,0.4);
-    border-radius: 10px;
-    padding: 12px;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 14px;
-  }
-  .urgency-bar strong { color: #fff; }
-  .badge {
-    display: inline-block;
-    background: #e74c3c;
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    padding: 6px 16px;
-    border-radius: 20px;
-    margin-bottom: 16px;
-  }
-  h1 {
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 12px;
-  }
-  .subheadline {
-    font-size: 16px;
-    color: #b8d4e3;
-    margin-bottom: 24px;
-  }
-  .hero-img {
-    width: 100%;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-  .hero-img img { width: 100%; display: block; }
-  .caption {
-    text-align: center;
-    font-size: 13px;
-    color: #8ab4c7;
-    margin-bottom: 24px;
-    font-style: italic;
-  }
-  .section {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  .section-title {
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .bullet-list { list-style: none; }
-  .bullet-list li {
-    padding: 6px 0 6px 24px;
-    position: relative;
-    font-size: 15px;
-    color: #d0e6f0;
-  }
-  .bullet-list li::before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: #2ecc71;
-    font-weight: 700;
-  }
-  .card {
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  .card.featured { border-color: #f1c40f; }
-  .card-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
-  .card-desc {
-    font-size: 14px;
-    color: #a8c8d8;
-    line-height: 1.5;
-  }
-  .validity {
-    display: inline-block;
-    background: rgba(46,204,113,0.2);
-    color: #2ecc71;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
-    margin-top: 8px;
-  }
-  .also {
-    font-size: 13px;
-    color: #8ab4c7;
-    text-align: center;
-    margin: 16px 0 4px;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-  .also-sub {
-    font-size: 14px;
-    color: #b8d4e3;
-    text-align: center;
-    margin-bottom: 16px;
-    font-style: italic;
-  }
-  .reassure {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    margin: 20px 0;
-  }
-  .pill {
-    background: rgba(46,204,113,0.15);
-    border: 1px solid rgba(46,204,113,0.3);
-    color: #2ecc71;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 20px;
-  }
-  .form-group {
-    margin-bottom: 16px;
-  }
-  .form-group label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #b8d4e3;
-    text-transform: uppercase;
-  }
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    font-size: 15px;
-  }
-  .form-group input::placeholder { color: #6a8fa3; }
-  .form-group select option { background: #203a43; color: #fff; }
-  .submit-btn {
-    width: 100%;
-    padding: 16px;
-    background: #e74c3c;
-    color: #fff;
-    font-size: 17px;
-    font-weight: 800;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    text-transform: uppercase;
-    margin-top: 8px;
-  }
-  .btn-subtext {
-    text-align: center;
-    font-size: 12px;
-    color: #8ab4c7;
-    margin-top: 10px;
-  }
-  .note-box {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  .note-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: #b8d4e3;
-    margin-bottom: 10px;
-  }
-  .note-text {
-    font-size: 13px;
-    color: #a8c8d8;
-    line-height: 1.6;
-    margin-bottom: 8px;
-  }
-  .note-list { list-style: none; padding-left: 0; }
-  .note-list li {
-    padding: 4px 0 4px 20px;
-    position: relative;
-    font-size: 13px;
-    color: #a8c8d8;
-  }
-  .note-list li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: #3498db;
-    font-weight: 700;
-  }
-  .footer {
-    text-align: center;
-    padding: 24px 0 40px;
-  }
-  .company { font-size: 14px; color: #b8d4e3; font-weight: 600; margin-bottom: 6px; }
-  .phone { font-size: 16px; color: #f1c40f; font-weight: 700; margin-bottom: 12px; }
-  .logos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    opacity: 0.7;
-  }
-  .logos span { font-size: 12px; font-weight: 700; color: #8ab4c7; }
-  .bonus-box {
-    background: rgba(241,196,15,0.1);
-    border: 1px solid rgba(241,196,15,0.3);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-  .bonus-title { font-size: 16px; font-weight: 700; color: #f1c40f; margin-bottom: 8px; }
-  .bonus-text { font-size: 14px; color: #d0e6f0; line-height: 1.6; }
-  .bonus-hl { color: #f1c40f; font-weight: 700; }
-  .safety-box {
-    background: rgba(231,76,60,0.1);
-    border: 1px solid rgba(231,76,60,0.25);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-  }
-  .safety-title { font-size: 14px; font-weight: 700; color: #ff9f9f; margin-bottom: 6px; }
-  .safety-text { font-size: 13px; color: #d0e6f0; }
-  .gift-img { width: 100%; border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
-  .gift-img img { width: 100%; display: block; }
-  .cruise-logos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-  }
-  .cruise-logos span { font-size: 12px; font-weight: 700; color: #f1c40f; }
-  @media (max-width: 480px) {
-    h1 { font-size: 24px; }
-    .subheadline { font-size: 15px; }
-    .section { padding: 16px; }
-  }
+body {
+  font-family: Arial, sans-serif;
+  background: #1a2a3a;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+h1 { color: #f1c40f; }
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border-radius: 5px;
+  border: none;
+}
+button {
+  background: #e74c3c;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.card {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 10px;
+}
+img { max-width: 100%; border-radius: 10px; }
 </style>
 <base target="_blank">
 </head>
@@ -282,380 +47,180 @@
 
 <div class="container">
 
-  <div class="urgency-bar">
-    <strong>Next Session:</strong> <span id="urgency-text">Loading...</span>
-  </div>
+<h1>See How Smart Travelers Save 70%+ on Luxury Vacations</h1>
 
-  <div class="badge">Private Invitation</div>
-  <h1>See How Smart Travelers Save 70%+ on Luxury Vacations</h1>
-  <p class="subheadline">
-    Join our private 20-minute Zoom presentation and discover the system behind unpublished rates at Hyatt, Hilton, Marriott & more. As our thank-you for attending, receive a <strong>5-Day/4-Night Cruise Certificate for 2</strong> — valid for 24 months. If cruising isn't for you, no worries — you may pick other options.
-  </p>
+<p>Join our private 20-minute Zoom presentation. As our thank-you, receive a <strong>5-Day/4-Night Cruise Certificate for 2</strong> — valid for 24 months. If cruising isn't for you, no worries — you may pick other options.</p>
 
-  <div class="hero-img">
-    <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&q=80" alt="Luxury Cruise">
-  </div>
-  <p class="caption">5-Day/4-Night Cruise for 2 | Carnival, Royal Caribbean, Norwegian or Princess</p>
+<img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&q=80" alt="Cruise">
 
-  <div class="section">
-    <div class="section-title">🎯 What You'll Discover</div>
-    <ul class="bullet-list">
-      <li>How to access unpublished rates at Hyatt, Hilton, Marriott & Wyndham properties</li>
-      <li>The simple system behind 70%+ savings on premium travel — zero markups compared to Booking.com and Expedia</li>
-      <li>How your complimentary certificate works — no fine print, no catch</li>
-      <li>Real examples from travelers who saved $2,000+ on their last trip</li>
-      <li>The insider platform behind these deals (revealed during the presentation)</li>
-    </ul>
-  </div>
+<div class="card">
+<h3>5-Day/4-Night Cruise Certificate for 2</h3>
+<p>24-month validity | Carnival, Royal Caribbean, Norwegian, Princess | Unlimited buffet + Vegas-style shows nightly | No onboard sales presentation</p>
+</div>
 
-  <div class="bonus-box">
-    <div class="bonus-title">💰 $100 Rewards Voucher Bonus</div>
-    <div class="bonus-text">
-      Join the presentation on a <span class="bonus-hl">laptop, desktop, or tablet</span> for the most stable and best viewing experience — and receive a <span class="bonus-hl">$100 Rewards Voucher</span> as a bonus. Mobile phones are welcome, but the bonus is tied to non-mobile devices. Mobile phones can sometimes get disconnected if there's an incoming call.
-    </div>
-  </div>
+<div class="card">
+<h3>6-Day/5-Night Hawaii Hotel Certificate</h3>
+<p>Waikiki Beach, Oahu | Marriott, Hyatt, Hilton, IHG, Wyndham | Valid 18 months</p>
+<img src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=800&q=80" alt="Hawaii">
+</div>
 
-  <div class="safety-box">
-    <div class="safety-title">🚫 Safety First</div>
-    <div class="safety-text">
-      For your safety and the quality of the session, we cannot accept joiners who are driving. Please be stationary and in a quiet environment during the presentation.
-    </div>
-  </div>
+<div class="card">
+<h3>6-Day/5-Night Puerto Plata All-Inclusive Resort</h3>
+<p>Dominican Republic | 2 adults + 2 children | Unlimited meals, drinks, entertainment | Lifestyle Tropical Beach Resort & Spa</p>
+</div>
 
-  <div class="section">
-    <div class="section-title">🎁 Your Thank-You Gift for Attending</div>
+<div class="card">
+<h3>Mexico Getaway</h3>
+<p>Cancun, Riviera Maya, Puerto Vallarta or Cabo | 6D/5N or 5D/4N options</p>
+</div>
 
-    <div class="card featured">
-      <div class="gift-img">
-        <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&q=80" alt="Luxury Cruise">
-      </div>
-      <div class="card-title">5-Day / 4-Night Cruise Certificate for 2</div>
-      <div class="card-desc">
-        • 24-month validity — redeem now, travel later<br>
-        • Unlimited buffet (breakfast, lunch, dinner) + Vegas-style shows nightly<br>
-        • No onboard sales presentation
-      </div>
-      <div class="validity">✓ Valid for 24 months</div>
-      <div class="cruise-logos">
-        <span>CARNIVAL</span>
-        <span>ROYAL CARIBBEAN</span>
-        <span>NORWEGIAN</span>
-        <span>PRINCESS</span>
-      </div>
-    </div>
+<div class="card">
+<h3>4-Day/3-Night Luxury U.S. Hotel Stay</h3>
+<p>35+ destinations | Marriott, Hilton, Hyatt, Wyndham | Voucher emailed after webinar</p>
+</div>
 
-    <div class="also">If Cruising Isn't for You, Here Are Your Other Options</div>
-    <div class="also-sub">Also Available After the Presentation</div>
+<p style="color: #2ecc71;">✓ No Membership Obligation | ✓ No Timeshare | ✓ No Purchase Required | ✓ 18-24 Month Validity</p>
 
-    <div class="card">
-      <div class="gift-img">
-        <img src="https://images.unsplash.com/photo-1528164344705-47542687000d?w=800&q=80" alt="Hawaii Waikiki Beach">
-      </div>
-      <div class="card-title">6-Day / 5-Night Hawaii Hotel Certificate for 2</div>
-      <div class="card-desc">
-        • Valid in Oahu — experience world-famous Waikiki Beach, vibrant nightlife, shopping, and dining<br>
-        • Good for 2 adults (extra guests allowed)<br>
-        • Marriott, Hyatt, Hilton, IHG & Wyndham
-      </div>
-      <div class="validity">✓ Valid for 18 months</div>
-      <div class="cruise-logos">
-        <span>MARRIOTT</span>
-        <span>HYATT</span>
-        <span>HILTON</span>
-        <span>IHG</span>
-        <span>WYNDHAM</span>
-      </div>
-    </div>
+<p><strong>💰 $100 Rewards Voucher Bonus:</strong> Join on laptop/desktop/tablet for best experience. Mobile phones welcome but bonus tied to non-mobile devices.</p>
 
-    <div class="card">
-      <div class="gift-img">
-        <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80" alt="Puerto Plata Beach Resort">
-      </div>
-      <div class="card-title">6-Day / 5-Night All-Inclusive Puerto Plata Beachfront Resort</div>
-      <div class="card-desc">
-        • 5-night all-inclusive beachfront resort (Dominican Republic)<br>
-        • Accommodates 2 adults + 2 children (12 & under)<br>
-        • Unlimited meals, snacks, drinks & alcoholic beverages<br>
-        • Multiple restaurants, bars & pool areas throughout the resort<br>
-        • Beach access, nightly entertainment & resort activities<br>
-        • Hotel: Lifestyle Tropical Beach Resort & Spa
-      </div>
-      <div class="validity">✓ Valid for 18 months</div>
-    </div>
+<p style="color: #ff9f9f;"><strong>🚫 Safety:</strong> We cannot accept joiners who are driving. Please be stationary and in a quiet environment.</p>
 
-    <div class="card">
-      <div class="gift-img">
-        <img src="https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=800&q=80" alt="Mexico Cancun Beach">
-      </div>
-      <div class="card-title">Mexico Getaway — Cancun, Riviera Maya, Puerto Vallarta or Cabo</div>
-      <div class="card-desc">
-        • 6D/5N in Cancun, Riviera Maya or Puerto Vallarta OR 5D/4N in Cabo San Lucas<br>
-        • All-inclusive options available at select resorts
-      </div>
-      <div class="validity">✓ Valid for 18 months</div>
-    </div>
+<h2>Reserve Your Seat</h2>
 
-    <div class="card">
-      <div class="gift-img">
-        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80" alt="Luxury U.S. Hotel">
-      </div>
-      <div class="card-title">4-Day / 3-Night Luxury U.S. Hotel Stay for 2</div>
-      <div class="card-desc">
-        • Marriott, Hilton, Hyatt, Wyndham & more<br>
-        • 35+ U.S. destinations<br>
-        • 18-month travel window<br>
-        • Hotel voucher emailed after webinar<br>
-        • Powered by RedeemVacations (over 10,000 partner companies)
-      </div>
-      <div class="validity">✓ Valid for 18 months</div>
-      <div class="cruise-logos">
-        <span>MARRIOTT</span>
-        <span>HILTON</span>
-        <span>HYATT</span>
-        <span>WYNDHAM</span>
-      </div>
-    </div>
-  </div>
+<form action="https://docs.google.com/forms/d/e/1FAIpQLScl4yGIuQTlfE_vAJjFv_FEh8updma0BiN4fKYRoKAC5XZCxw/formResponse" method="POST" target="_blank">
 
-  <div class="reassure">
-    <div class="pill">✓ No Membership Obligation</div>
-    <div class="pill">✓ No Timeshare</div>
-    <div class="pill">✓ No Purchase Required</div>
-    <div class="pill">✓ 18–24 Month Validity</div>
-  </div>
+<label>First Name</label>
+<input type="text" name="entry.642135503" required>
 
-  <div class="section">
-    <div class="section-title">📝 Reserve Your Seat</div>
+<label>Last Name</label>
+<input type="text" name="entry.204257446" required>
 
-    <form action="https://docs.google.com/forms/d/e/1FAIpQLScl4yGIuQTlfE_vAJjFv_FEh8updma0BiN4fKYRoKAC5XZCxw/formResponse" method="POST" target="_blank">
+<label>Email</label>
+<input type="email" name="entry.1556369182" required>
 
-      <div class="form-group">
-        <label>First Name</label>
-        <input type="text" name="entry.642135503" placeholder="Enter your first name" required>
-      </div>
+<label>Mobile Number</label>
+<input type="tel" name="entry.1073630673" required>
 
-      <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" name="entry.204257446" placeholder="Enter your last name" required>
-      </div>
+<label>Choose Your Certificate</label>
+<select name="entry.1753222212" required>
+<option value="">Select...</option>
+<option value="5-day/4-night CRUISE certificate for 2 (valid for 24 months) | Carnival, Royal Caribbean, Norwegian or Princess | Miami ➝ Cozumel, Los Angeles ➝ Ensenada, Mexico, Port Canaveral ➝ Nassau, Bahamas">5-Day/4-Night Cruise</option>
+<option value="6-day/5-night Premium HAWAII Hotel certificate for 2 (valid for 18 months) | Valid in Oahu — experience world-famous Waikiki Beach, vibrant nightlife, shopping, and dining">6-Day/5-Night Hawaii Hotel</option>
+<option value="4-day/3-night Luxury U.S. Hotel stay certificate for 2 (valid for 18 months) | 35+ premier U.S. destinations. Powered by RedeemVacations.com">4-Day/3-Night U.S. Hotel</option>
+<option value="6-day/5-nights PUERTO PLATA Beach Front Resort, Dominican Republic - All inclusive (valid for 18 months)">6-Day/5-Night Puerto Plata</option>
+<option value="6D/5N stay in Cancun, Riviera Maya or Puerto Vallarta OR 5D/4N stay in Cabo San Lucas">Mexico Getaway</option>
+</select>
 
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" name="entry.1556369182" placeholder="you@example.com" required>
-      </div>
+<label>Device You'll Use</label>
+<select name="entry.1572570997" required>
+<option value="">Select...</option>
+<option value="Yes – Laptop/Desktop/Tablet (Eligible for $100 Rewards Certificate on top)">Laptop/Desktop/Tablet ($100 Bonus)</option>
+<option value="Mobile Phone Only (No $100 Rewards Certificate)">Mobile Phone Only</option>
+</select>
 
-      <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="tel" name="entry.1073630673" placeholder="(555) 123-4567" required>
-      </div>
+<label>Date</label>
+<select id="date" name="entry.603218226" required>
+<option value="">Loading...</option>
+</select>
 
-      <div class="form-group">
-        <label>Choose Your Preferred Certificate</label>
-        <select name="entry.1753222212" required>
-          <option value="" disabled selected>Select your certificate...</option>
-          <option value="5-day/4-night CRUISE certificate for 2 (valid for 24 months) | Carnival, Royal Caribbean, Norwegian or Princess | Miami ➝ Cozumel, Los Angeles ➝ Ensenada, Mexico, Port Canaveral ➝ Nassau, Bahamas">5-Day/4-Night Cruise Certificate for 2</option>
-          <option value="6-day/5-night Premium HAWAII Hotel certificate for 2 (valid for 18 months) | Valid in Oahu — experience world-famous Waikiki Beach, vibrant nightlife, shopping, and dining">6-Day/5-Night Hawaii Hotel Certificate</option>
-          <option value="4-day/3-night Luxury U.S. Hotel stay certificate for 2 (valid for 18 months) | 35+ premier U.S. destinations. Powered by RedeemVacations.com">4-Day/3-Night Luxury U.S. Hotel Stay</option>
-          <option value="6-day/5-nights PUERTO PLATA Beach Front Resort, Dominican Republic - All inclusive (valid for 18 months)">6-Day/5-Night Puerto Plata All-Inclusive Resort</option>
-          <option value="6D/5N stay in Cancun, Riviera Maya or Puerto Vallarta OR 5D/4N stay in Cabo San Lucas">Mexico Getaway — Cancun, Riviera Maya, Puerto Vallarta or Cabo</option>
-        </select>
-      </div>
+<label>Time Zone</label>
+<select id="timezone" name="entry.1249610350" required onchange="updateTimes()">
+<option value="">Select...</option>
+<option value="Eastern (EDT) – NY, FL, GA, SC, NC, VA, WV, PA, OH, MI, IN, KY, TN, ME, VT, NH, MA, RI, CT, NJ, DE, MD, DC">Eastern</option>
+<option value="Central (CDT) – TX, OK, KS, NE, SD, ND, MN, IA, MO, AR, LA, MS, AL, WI, IL, TN, KY, IN, MI, FL">Central</option>
+<option value="Mountain (MDT) – AZ, CO, UT, NM, WY, MT, ID, OR, WA, NV, CA">Mountain</option>
+<option value="Pacific (PDT) – CA, OR, WA, NV, AZ">Pacific</option>
+<option value="Alaska (AKDT) – AK">Alaska</option>
+<option value="Hawaii (HST) – HI">Hawaii</option>
+</select>
 
-      <div class="form-group">
-        <label>What device will you use to join?</label>
-        <select name="entry.1572570997" required>
-          <option value="" disabled selected>Select your device...</option>
-          <option value="Yes – Laptop/Desktop/Tablet (Eligible for $100 Rewards Certificate on top)">Yes – Laptop/Desktop/Tablet (Eligible for $100 Rewards Certificate)</option>
-          <option value="Mobile Phone Only (No $100 Rewards Certificate)">Mobile Phone Only (No $100 Rewards Certificate)</option>
-        </select>
-      </div>
+<label>Session Time</label>
+<select id="session" name="entry.1170556109" required>
+<option value="">Select timezone first...</option>
+</select>
 
-      <div class="form-group">
-        <label>Select Your Date</label>
-        <select id="date" name="entry.603218226" required>
-          <option value="" disabled selected>Loading available dates...</option>
-        </select>
-      </div>
+<label>Attendance Confirmation</label>
+<select name="entry.2020979342" required>
+<option value="">Select...</option>
+<option value="Yes, I will attend at my selected time.">Yes, I will attend at my selected time.</option>
+</select>
 
-      <div class="form-group">
-        <label>Your Time Zone</label>
-        <select id="timezone" name="entry.1249610350" required onchange="updateTimes()">
-          <option value="" disabled selected>Select your time zone...</option>
-          <option value="Eastern (EDT) – NY, FL, GA, SC, NC, VA, WV, PA, OH, MI, IN, KY, TN, ME, VT, NH, MA, RI, CT, NJ, DE, MD, DC">Eastern (EDT)</option>
-          <option value="Central (CDT) – TX, OK, KS, NE, SD, ND, MN, IA, MO, AR, LA, MS, AL, WI, IL, TN, KY, IN, MI, FL">Central (CDT)</option>
-          <option value="Mountain (MDT) – AZ, CO, UT, NM, WY, MT, ID, OR, WA, NV, CA">Mountain (MDT)</option>
-          <option value="Pacific (PDT) – CA, OR, WA, NV, AZ">Pacific (PDT)</option>
-          <option value="Alaska (AKDT) – AK">Alaska (AKDT)</option>
-          <option value="Hawaii (HST) – HI">Hawaii (HST)</option>
-        </select>
-      </div>
+<br><br>
+<button type="submit">RESERVE MY SEAT</button>
 
-      <div class="form-group">
-        <label>Preferred Session Time</label>
-        <select id="session" name="entry.1170556109" required>
-          <option value="" disabled selected>Select your time zone first...</option>
-        </select>
-      </div>
+</form>
 
-      <div class="form-group">
-        <label>Attendance Confirmation</label>
-        <select name="entry.2020979342" required>
-          <option value="" disabled selected>Confirm your attendance...</option>
-          <option value="Yes, I will attend at my selected time.">Yes, I will attend at my selected time.</option>
-        </select>
-      </div>
+<br><br>
+<p><strong>Note from the Host:</strong> During the webinar, there will be a brief audience survey for research purposes only. Your responses will NOT affect your ability to attend or receive your travel certificate. The survey may include questions about combined household annual income (typically $50,000+) and U.S. or Canadian residency status.</p>
 
-      <button type="submit" class="submit-btn">Reserve My Seat →</button>
-      <p class="btn-subtext">Spots are limited. Your certificate will be emailed after attendance is confirmed.</p>
-    </form>
-  </div>
-
-  <div class="note-box">
-    <div class="note-title">🗒️ Note from the Host</div>
-    <div class="note-text">
-      During the webinar, there will be a brief audience survey to help us better understand our attendees and improve future sessions. This survey is for research and audience profiling purposes only. Your responses will NOT affect your ability to attend or receive your travel certificate.
-    </div>
-    <div class="note-text">
-      ✅ The survey may include general questions such as:
-    </div>
-    <ul class="note-list">
-      <li>Combined household annual income (you, your partner, and anyone contributing to the household) — typically $50,000+</li>
-      <li>U.S. or Canadian residency status</li>
-    </ul>
-  </div>
-
-  <div class="footer">
-    <p class="company">Aloha Hawaii Tours and Travel</p>
-    <p class="phone">📞 808-4826-330</p>
-    <div class="logos">
-      <span>CARNIVAL</span>
-      <span>ROYAL CARIBBEAN</span>
-      <span>NORWEGIAN</span>
-      <span>PRINCESS</span>
-    </div>
-    <div class="logos">
-      <span>ACCOR</span>
-      <span>HYATT</span>
-      <span>HILTON</span>
-      <span>IHG</span>
-      <span>MARRIOTT</span>
-      <span>WYNDHAM</span>
-    </div>
-  </div>
+<br>
+<p style="text-align: center;"><strong>Aloha Hawaii Tours and Travel</strong><br>
+📞 808-4826-330</p>
 
 </div>
 
 <script>
-  const tzOffsets = {
-    "Eastern (EDT) – NY, FL, GA, SC, NC, VA, WV, PA, OH, MI, IN, KY, TN, ME, VT, NH, MA, RI, CT, NJ, DE, MD, DC": 0,
-    "Central (CDT) – TX, OK, KS, NE, SD, ND, MN, IA, MO, AR, LA, MS, AL, WI, IL, TN, KY, IN, MI, FL": -1,
-    "Mountain (MDT) – AZ, CO, UT, NM, WY, MT, ID, OR, WA, NV, CA": -2,
-    "Pacific (PDT) – CA, OR, WA, NV, AZ": -3,
-    "Alaska (AKDT) – AK": -4,
-    "Hawaii (HST) – HI": -6
-  };
+const tzOffsets = {
+  "Eastern (EDT) – NY, FL, GA, SC, NC, VA, WV, PA, OH, MI, IN, KY, TN, ME, VT, NH, MA, RI, CT, NJ, DE, MD, DC": 0,
+  "Central (CDT) – TX, OK, KS, NE, SD, ND, MN, IA, MO, AR, LA, MS, AL, WI, IL, TN, KY, IN, MI, FL": -1,
+  "Mountain (MDT) – AZ, CO, UT, NM, WY, MT, ID, OR, WA, NV, CA": -2,
+  "Pacific (PDT) – CA, OR, WA, NV, AZ": -3,
+  "Alaska (AKDT) – AK": -4,
+  "Hawaii (HST) – HI": -6
+};
 
-  function generateTimes(tzValue) {
-    const offset = tzOffsets[tzValue] || 0;
-    const times = [];
-    const easternStart = 14 * 60;
-    const easternEnd = 20 * 60 + 30;
-    const interval = 30;
+function updateTimes() {
+  const tz = document.getElementById('timezone').value;
+  const session = document.getElementById('session');
+  if (!tz) { session.innerHTML = '<option value="">Select timezone first...</option>'; return; }
 
-    for (let t = easternStart; t <= easternEnd; t += interval) {
-      const localMinutes = t + (offset * 60);
-      const h = Math.floor(localMinutes / 60);
-      const m = localMinutes % 60;
-      const ampm = h >= 12 ? 'PM' : 'AM';
-      const displayH = h > 12 ? h - 12 : (h === 0 ? 12 : h);
-      const displayM = m === 0 ? '00' : m;
+  const offset = tzOffsets[tz] || 0;
+  session.innerHTML = '<option value="">Select time...</option>';
 
-      const etH = Math.floor(t / 60);
-      const etM = t % 60;
-      const etAmpm = etH >= 12 ? 'PM' : 'AM';
-      const etDisplayH = etH > 12 ? etH - 12 : (etH === 0 ? 12 : etH);
-      const etDisplayM = etM === 0 ? '00' : etM;
+  for (let t = 14*60; t <= 20*60+30; t += 30) {
+    const localMin = t + (offset * 60);
+    const h = Math.floor(localMin / 60);
+    const m = localMin % 60;
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const dh = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+    const dm = m === 0 ? '00' : m;
 
-      times.push({
-        local: `${displayH}:${displayM} ${ampm}`,
-        et: `${etDisplayH}:${etDisplayM} ${etAmpm}`
-      });
-    }
-    return times;
+    const eth = Math.floor(t / 60);
+    const etm = t % 60;
+    const etampm = eth >= 12 ? 'PM' : 'AM';
+    const etdh = eth > 12 ? eth - 12 : (eth === 0 ? 12 : eth);
+    const etdm = etm === 0 ? '00' : etm;
+
+    const val = `${dh}:${dm} ${ampm} (${etdh}:${etdm} ${etampm} ET)`;
+    session.innerHTML += `<option value="${val}">${val}</option>`;
   }
+}
 
-  function updateTimes() {
-    const tzValue = document.getElementById('timezone').value;
-    const sessionSelect = document.getElementById('session');
+function initDate() {
+  const now = new Date();
+  const et = new Intl.DateTimeFormat('en-US', {timeZone: 'America/New_York', hour: 'numeric', minute: 'numeric', hour12: false}).formatToParts(now);
+  const eth = parseInt(et.find(p => p.type === 'hour').value);
+  const etm = parseInt(et.find(p => p.type === 'minute').value);
 
-    if (!tzValue) {
-      sessionSelect.innerHTML = '<option value="" disabled selected>Select your time zone first...</option>';
-      return;
-    }
+  const today = new Date(now);
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
-    const times = generateTimes(tzValue);
-    sessionSelect.innerHTML = '<option value="" disabled selected>Select your time...</option>';
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-    times.forEach(time => {
-      const option = document.createElement('option');
-      option.value = `${time.local} (${time.et} ET)`;
-      option.textContent = `${time.local} (${time.et} ET)`;
-      sessionSelect.appendChild(option);
-    });
+  const ds = document.getElementById('date');
+  ds.innerHTML = '';
+
+  const past = eth > 20 || (eth === 20 && etm > 15);
+
+  if (!past) {
+    ds.innerHTML += `<option value="${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}" selected>Today — ${days[today.getDay()]}, ${months[today.getMonth()]} ${today.getDate()}</option>`;
   }
+  ds.innerHTML += `<option value="${tomorrow.getFullYear()}-${String(tomorrow.getMonth()+1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}" ${past ? 'selected' : ''}>Tomorrow — ${days[tomorrow.getDay()]}, ${months[tomorrow.getMonth()]} ${tomorrow.getDate()}</option>`;
+}
 
-  function initDateSelector() {
-    const now = new Date();
-    const etFormatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: 'America/New_York',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: false
-    });
-    const etParts = etFormatter.formatToParts(now);
-    const etHour = parseInt(etParts.find(p => p.type === 'hour').value);
-    const etMinute = parseInt(etParts.find(p => p.type === 'minute').value);
-
-    const today = new Date(now);
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    const monthNames = ["January","February","March","April","May","June",
-      "July","August","September","October","November","December"];
-    const dayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-
-    const dateSelect = document.getElementById('date');
-    dateSelect.innerHTML = '';
-
-    const isPastDeadline = etHour > 20 || (etHour === 20 && etMinute > 15);
-
-    if (!isPastDeadline) {
-      const todayOption = document.createElement('option');
-      todayOption.value = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
-      todayOption.textContent = `Today — ${dayNames[today.getDay()]}, ${monthNames[today.getMonth()]} ${today.getDate()}`;
-      todayOption.selected = true;
-      dateSelect.appendChild(todayOption);
-    }
-
-    const tomorrowOption = document.createElement('option');
-    tomorrowOption.value = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth()+1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}`;
-    tomorrowOption.textContent = `Tomorrow — ${dayNames[tomorrow.getDay()]}, ${monthNames[tomorrow.getMonth()]} ${tomorrow.getDate()}`;
-    if (isPastDeadline) {
-      tomorrowOption.selected = true;
-    }
-    dateSelect.appendChild(tomorrowOption);
-
-    const urgencyText = document.getElementById('urgency-text');
-    if (isPastDeadline) {
-      urgencyText.innerHTML = `Tomorrow, ${dayNames[tomorrow.getDay()]} ${tomorrow.getDate()} ${monthNames[tomorrow.getMonth()]} — <strong>Limited spots remaining</strong>`;
-    } else {
-      urgencyText.innerHTML = `Today, ${dayNames[today.getDay()]} ${today.getDate()} ${monthNames[today.getMonth()]} — <strong>Only a few spots left for tonight</strong>`;
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    initDateSelector();
-  });
+initDate();
 </script>
 
 </body>

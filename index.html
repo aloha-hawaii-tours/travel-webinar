@@ -76,8 +76,6 @@
     33% { transform: translate(30px,-30px) scale(1.1); }
     66% { transform: translate(-20px,20px) scale(0.95); }
   }
-
-  /* Noise texture overlay */
   .bg-mesh::after {
     content: '';
     position: absolute;
@@ -454,7 +452,7 @@
   .safety-title { font-size: 15px; font-weight: 800; color: #ff9f9f; margin-bottom: 8px; }
   .safety-text { font-size: 14px; color: #c8dde8; line-height: 1.55; }
 
-  /* Form Styles with Floating Labels */
+  /* Form Styles */
   .form-group {
     margin-bottom: 22px;
     position: relative;
@@ -500,6 +498,57 @@
   .form-group select option { background: #1a2f3d; color: #fff; }
   .form-group select:invalid { color: var(--text-dim); }
 
+  /* Date Toggle Buttons */
+  .date-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .date-btn {
+    flex: 1;
+    padding: 16px 12px;
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .date-btn:hover {
+    border-color: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+  }
+  .date-btn.active {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, rgba(231,76,60,0.15), rgba(192,57,43,0.08));
+    color: #fff;
+    box-shadow: 0 0 20px rgba(231,76,60,0.15);
+  }
+  .date-btn .day-label {
+    display: block;
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 2px;
+  }
+  .date-btn .date-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+  .date-btn.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    border-color: rgba(255,255,255,0.06);
+  }
+
   /* Submit Button */
   .submit-btn {
     width: 100%;
@@ -541,11 +590,8 @@
     opacity: 0.8;
   }
   .submit-btn.loading::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.2);
     animation: none;
+    background: rgba(0,0,0,0.2);
   }
   .btn-subtext {
     text-align: center;
@@ -728,6 +774,8 @@
     .section { padding: 20px; }
     body { padding: 12px; }
     .modal { padding: 28px 20px; }
+    .date-btn { padding: 14px 8px; font-size: 13px; }
+    .date-btn .day-label { font-size: 16px; }
   }
 </style>
 <base target="_blank">
@@ -759,7 +807,7 @@
     <div class="badge">Private Invitation</div>
     <h1>See How Smart Travelers Save 70%+ on Luxury Vacations</h1>
     <p class="subheadline">
-      Join our private 20-minute Zoom presentation and discover the system behind unpublished rates at Hyatt, Hilton, Marriott & more. As our thank-you for attending, receive a <strong>5-Day/4-Night Cruise Certificate for 2</strong> — valid for 24 months. If cruising isn't for you, no worries — you may pick other options.
+      Join our private 45-minute Zoom presentation and discover the system behind unpublished rates at Hyatt, Hilton, Marriott & more. As our thank-you for attending, receive a <strong>5-Day/4-Night Cruise Certificate for 2</strong> — valid for 24 months. If cruising isn't for you, no worries — you may pick other options.
     </p>
   </div>
 
@@ -883,9 +931,6 @@
       <!-- Email subject line -->
       <input type="hidden" name="_subject" value="New Presentation Reservation">
 
-      <!-- Redirect after submit (optional - configure in Formspree dashboard instead) -->
-      <!-- <input type="hidden" name="_next" value="https://yourdomain.com/thanks.html"> -->
-
       <div class="form-group">
         <label>First Name</label>
         <input type="text" name="first_name" placeholder="Enter your first name" required>
@@ -921,12 +966,23 @@
           <option>Mobile Phone Only</option>
         </select>
       </div>
+
+      <!-- Date Toggle -->
       <div class="form-group">
         <label>Select Your Date</label>
-        <select name="date" id="date-select" required>
-          <option value="" disabled selected>Loading available dates...</option>
-        </select>
+        <div class="date-toggle" id="date-toggle">
+          <button type="button" class="date-btn" id="btn-today" onclick="selectDate('today')">
+            <span class="day-label">Today</span>
+            <span class="date-label" id="today-label">...</span>
+          </button>
+          <button type="button" class="date-btn" id="btn-tomorrow" onclick="selectDate('tomorrow')">
+            <span class="day-label">Tomorrow</span>
+            <span class="date-label" id="tomorrow-label">...</span>
+          </button>
+        </div>
+        <input type="hidden" name="date" id="date-input" required>
       </div>
+
       <div class="form-group">
         <label>Your Time Zone</label>
         <select name="timezone" id="timezone-select" required>
@@ -1006,6 +1062,9 @@
   const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
+  let selectedDate = null;
+  let todayAvailable = false;
+
   function getETNow() {
     const now = new Date();
     const formatter = new Intl.DateTimeFormat('en-US', {
@@ -1019,19 +1078,25 @@
     return new Date(`${get('year')}-${get('month')}-${get('day')}T${get('hour')}:${get('minute')}:${get('second')}`);
   }
 
-  function formatDateLabel(date, isToday) {
+  function formatDateShort(date) {
+    const month = MONTHS[date.getMonth()];
+    const day = date.getDate();
+    return `${month} ${day}`;
+  }
+
+  function formatDateFull(date) {
     const dayName = DAYS[date.getDay()];
     const month = MONTHS[date.getMonth()];
     const day = date.getDate();
     const year = date.getFullYear();
-    return `${isToday ? 'Today' : 'Tomorrow'} — ${dayName}, ${month} ${day}, ${year}`;
+    return `${dayName}, ${month} ${day}, ${year}`;
   }
 
   function formatTime(hour24, tzCode) {
     const h = parseInt(hour24);
     const offset = TIMEZONE_OFFSETS[tzCode];
     const etOffset = -4;
-    const diff = etOffset - offset; // hours difference from ET
+    const diff = etOffset - offset;
     const localH = (h - diff + 24) % 24;
     const ampm = localH >= 12 ? 'PM' : 'AM';
     const displayH = localH % 12 === 0 ? 12 : localH % 12;
@@ -1043,50 +1108,75 @@
     const etHour = etNow.getHours();
     const etMin = etNow.getMinutes();
     const etTimeVal = etHour * 60 + etMin;
-    const cutoffTime = 20 * 60 + 15; // 8:15 PM = 1215 minutes
+    const cutoffTime = 20 * 60 + 15; // 8:15 PM ET
 
     const today = new Date(etNow);
     const tomorrow = new Date(etNow);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    const dateSelect = document.getElementById('date-select');
-    dateSelect.innerHTML = '<option value="" disabled selected>Select your date...</option>';
+    // Set labels
+    document.getElementById('today-label').textContent = formatDateShort(today);
+    document.getElementById('tomorrow-label').textContent = formatDateShort(tomorrow);
 
-    let todayAvailable = false;
+    // Check if today is available
+    todayAvailable = etTimeVal < cutoffTime;
 
-    // Today is available only if current ET time is before 8:15 PM
-    if (etTimeVal < cutoffTime) {
-      todayAvailable = true;
-      const opt = document.createElement('option');
-      opt.value = today.toISOString().split('T')[0];
-      opt.textContent = formatDateLabel(today, true);
-      opt.dataset.isToday = 'true';
-      dateSelect.appendChild(opt);
-    }
+    const btnToday = document.getElementById('btn-today');
+    const btnTomorrow = document.getElementById('btn-tomorrow');
 
-    // Tomorrow is always available
-    const opt2 = document.createElement('option');
-    opt2.value = tomorrow.toISOString().split('T')[0];
-    opt2.textContent = formatDateLabel(tomorrow, false);
-    opt2.dataset.isToday = 'false';
-    dateSelect.appendChild(opt2);
-
-    // If today is not available, show a message
     if (!todayAvailable) {
-      showToast("Today's sessions have ended (after 8:15 PM ET). Booking opens for tomorrow.");
+      btnToday.classList.add('disabled');
+      btnToday.title = "Today's sessions have ended (after 8:15 PM ET)";
+      // Auto-select tomorrow
+      selectDate('tomorrow');
+    } else {
+      btnToday.classList.remove('disabled');
+      btnToday.title = "";
+      // Default to today
+      selectDate('today');
     }
 
-    return { todayAvailable, etNow };
+    return { etNow, today, tomorrow };
   }
 
-  function getAvailableSlotsForDate(dateValue, isToday, etNow) {
+  function selectDate(which) {
+    const btnToday = document.getElementById('btn-today');
+    const btnTomorrow = document.getElementById('btn-tomorrow');
+    const dateInput = document.getElementById('date-input');
+
+    const etNow = getETNow();
+    const today = new Date(etNow);
+    const tomorrow = new Date(etNow);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    if (which === 'today') {
+      if (!todayAvailable) {
+        showToast("Today's sessions have ended. Please select tomorrow.");
+        return;
+      }
+      btnToday.classList.add('active');
+      btnTomorrow.classList.remove('active');
+      selectedDate = today;
+      dateInput.value = formatDateFull(today);
+    } else {
+      btnToday.classList.remove('active');
+      btnTomorrow.classList.add('active');
+      selectedDate = tomorrow;
+      dateInput.value = formatDateFull(tomorrow);
+    }
+
+    // Refresh time slots
+    updateTimeSlots();
+  }
+
+  function getAvailableSlotsForDate(isToday, etNow) {
     if (!isToday) return ET_SLOTS;
 
     const etHour = etNow.getHours();
     const etMin = etNow.getMinutes();
     const currentTimeVal = etHour * 60 + etMin;
 
-    // Filter slots that are at least 30 minutes in the future
+    // Filter slots at least 30 minutes in the future
     return ET_SLOTS.filter(slot => {
       const [h, m] = slot.split(':').map(Number);
       const slotTimeVal = h * 60 + m;
@@ -1097,29 +1187,27 @@
   function updateTimeSlots() {
     const tzSelect = document.getElementById('timezone-select');
     const timeSelect = document.getElementById('time-select');
-    const dateSelect = document.getElementById('date-select');
 
     const tz = tzSelect.value;
-    const dateOpt = dateSelect.selectedOptions[0];
 
-    if (!tz || !dateOpt || !dateOpt.value) {
-      timeSelect.innerHTML = '<option value="" disabled selected>Select your time zone and date first...</option>';
+    if (!tz || !selectedDate) {
+      timeSelect.innerHTML = '<option value="" disabled selected>Select your time zone first...</option>';
       return;
     }
 
-    const isToday = dateOpt.dataset.isToday === 'true';
-    const { etNow } = initCalendar(); // recalc to be safe
-    const availableSlots = getAvailableSlotsForDate(dateOpt.value, isToday, etNow);
+    const etNow = getETNow();
+    const isToday = selectedDate.toDateString() === etNow.toDateString();
+    const availableSlots = getAvailableSlotsForDate(isToday, etNow);
 
     timeSelect.innerHTML = '<option value="" disabled selected>Select your time...</option>';
 
     if (availableSlots.length === 0) {
       const opt = document.createElement('option');
       opt.value = "";
-      opt.textContent = "No sessions available for this date";
+      opt.textContent = "No sessions available — please select tomorrow";
       opt.disabled = true;
       timeSelect.appendChild(opt);
-      showToast("No remaining sessions for this date. Please select tomorrow.");
+      showToast("No remaining sessions for today. Please select tomorrow.");
       return;
     }
 
@@ -1199,7 +1287,6 @@
       targetVal = cutoffVal;
       label = "Booking closes in";
     } else {
-      // Next day 2:00 PM
       targetVal = 14 * 3600 + 24 * 3600;
       label = "Next session opens in";
     }
@@ -1240,12 +1327,17 @@
   const btnText = document.getElementById('btn-text');
 
   document.getElementById('timezone-select').addEventListener('change', updateTimeSlots);
-  document.getElementById('date-select').addEventListener('change', updateTimeSlots);
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Validate time slot selected
+    // Validate date selected
+    if (!selectedDate) {
+      showToast('Please select a date (Today or Tomorrow).');
+      return;
+    }
+
+    // Validate time slot
     const timeSelect = document.getElementById('time-select');
     if (!timeSelect.value) {
       showToast('Please select a session time.');
@@ -1270,7 +1362,7 @@
         showModal();
         form.reset();
         initCalendar();
-        document.getElementById('time-select').innerHTML = '<option value="" disabled selected>Select your time zone and date first...</option>';
+        document.getElementById('time-select').innerHTML = '<option value="" disabled selected>Select your time zone first...</option>';
       } else {
         throw new Error('Formspree error');
       }

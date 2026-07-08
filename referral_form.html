@@ -1,961 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Refer a Friend — Exclusive Travel Certificate</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+// ============================================
+// REFERRAL FORM HANDLER — CORS FIXED
+// ============================================
 
-  :root {
-    --primary: #e74c3c;
-    --accent: #f1c40f;
-    --success: #2ecc71;
-    --glass: rgba(255,255,255,0.04);
-    --glass-border: rgba(255,255,255,0.08);
-    --glass-hover: rgba(255,255,255,0.07);
-    --text: #fff;
-    --text-muted: #8ab4c7;
-    --text-dim: #5a7a8a;
-    --bg-deep: #0a1929;
-  }
+// CHANGE THIS TO YOUR EMAIL
+const YOUR_EMAIL = "youremail@example.com";
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: var(--bg-deep);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 16px;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  .bg-mesh {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-  }
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.35;
-    animation: orbFloat 20s ease-in-out infinite;
-  }
-  .orb-1 {
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(52,152,219,0.4), transparent 70%);
-    top: -10%; left: -10%;
-  }
-  .orb-2 {
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(231,76,60,0.35), transparent 70%);
-    bottom: -10%; right: -10%;
-    animation-delay: -7s;
-    animation-duration: 25s;
-  }
-  .orb-3 {
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(241,196,15,0.25), transparent 70%);
-    top: 40%; left: 60%;
-    animation-delay: -14s;
-    animation-duration: 22s;
-  }
-  @keyframes orbFloat {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    33% { transform: translate(30px,-30px) scale(1.1); }
-    66% { transform: translate(-20px,20px) scale(0.95); }
-  }
-  .bg-mesh::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    opacity: 0.4;
-  }
-
-  .container {
-    max-width: 720px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-
-  .badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #f1c40f, #d4ac0d);
-    color: #000;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    padding: 8px 22px;
-    border-radius: 30px;
-    margin-bottom: 18px;
-    box-shadow: 0 4px 20px rgba(241,196,15,0.35);
-  }
-
-  h1 {
-    font-size: 34px;
-    font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 14px;
-    background: linear-gradient(135deg, #fff 0%, #a8c8dc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .subheadline {
-    font-size: 17px;
-    line-height: 1.65;
-    color: var(--text-muted);
-    margin-bottom: 28px;
-    font-weight: 400;
-  }
-  .subheadline strong { color: #fff; font-weight: 600; }
-
-  .section {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 28px;
-    margin-bottom: 24px;
-    backdrop-filter: blur(20px);
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-    overflow: hidden;
-  }
-  .section::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  }
-  .section:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-    border-color: rgba(255,255,255,0.12);
-    background: var(--glass-hover);
-  }
-  .section-title {
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 18px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-title .icon { font-size: 26px; }
-
-  .voucher-list { list-style: none; }
-  .voucher-list li {
-    padding: 14px 0 14px 36px;
-    position: relative;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #c8dde8;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .voucher-list li:last-child { border-bottom: none; }
-  .voucher-list li::before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--success);
-    font-weight: 800;
-    font-size: 18px;
-  }
-  .voucher-list li strong { color: #fff; }
-  .voucher-list li .validity-tag {
-    display: inline-block;
-    background: rgba(46,204,113,0.12);
-    color: var(--success);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 12px;
-    margin-top: 6px;
-    border: 1px solid rgba(46,204,113,0.25);
-  }
-
-  .form-group {
-    margin-bottom: 22px;
-    position: relative;
-  }
-  .form-group label {
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    padding: 16px 18px;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 12px;
-    background: rgba(255,255,255,0.04);
-    color: #fff;
-    font-size: 15px;
-    font-family: inherit;
-    transition: all 0.3s;
-    outline: none;
-    appearance: none;
-  }
-  .form-group select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%235a7a8a'%3E%3Cpath d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 18px center;
-    padding-right: 44px;
-  }
-  .form-group input:focus,
-  .form-group select:focus {
-    border-color: #3498db;
-    background: rgba(255,255,255,0.08);
-    box-shadow: 0 0 0 4px rgba(52,152,219,0.15);
-  }
-  .form-group input::placeholder { color: var(--text-dim); }
-  .form-group select option { background: #1a2f3d; color: #fff; }
-  .form-group select:invalid { color: var(--text-dim); }
-
-  .referrer-section {
-    background: linear-gradient(135deg, rgba(52,152,219,0.06), rgba(52,152,219,0.02));
-    border: 1px solid rgba(52,152,219,0.2);
-    border-radius: 16px;
-    padding: 22px;
-    margin-bottom: 24px;
-  }
-  .referrer-section .section-title { color: #3498db; }
-
-  .referred-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px;
-    padding: 20px;
-    margin-bottom: 16px;
-    position: relative;
-    transition: all 0.3s;
-  }
-  .referred-card:hover {
-    border-color: rgba(255,255,255,0.18);
-    transform: translateY(-2px);
-  }
-  .referred-card .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-  .referred-card .card-number {
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .referred-card .remove-btn {
-    background: rgba(231,76,60,0.15);
-    border: 1px solid rgba(231,76,60,0.3);
-    color: #ff6b6b;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-  }
-  .referred-card .remove-btn:hover {
-    background: rgba(231,76,60,0.25);
-    transform: scale(1.05);
-  }
-
-  .add-referral-btn {
-    width: 100%;
-    padding: 14px;
-    background: rgba(255,255,255,0.05);
-    border: 2px dashed rgba(255,255,255,0.15);
-    border-radius: 12px;
-    color: var(--text-muted);
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.3s;
-    margin-bottom: 24px;
-  }
-  .add-referral-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(241,196,15,0.05);
-  }
-
-  .submit-btn {
-    width: 100%;
-    padding: 20px;
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    color: #fff;
-    font-size: 18px;
-    font-weight: 900;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    box-shadow: 0 8px 30px rgba(231,76,60,0.4);
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-    font-family: inherit;
-  }
-  .submit-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(231,76,60,0.5);
-  }
-  .submit-btn:active { transform: translateY(-1px); }
-  .submit-btn::after {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%);
-    animation: btn-shimmer 4s infinite;
-  }
-  @keyframes btn-shimmer {
-    0% { transform: translateX(-100%) rotate(25deg); }
-    100% { transform: translateX(100%) rotate(25deg); }
-  }
-  .submit-btn.loading {
-    pointer-events: none;
-    opacity: 0.8;
-  }
-  .submit-btn.loading::after {
-    animation: none;
-    background: rgba(0,0,0,0.2);
-  }
-
-  .reassure {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin: 24px 0 0;
-  }
-  .pill {
-    background: rgba(46,204,113,0.1);
-    border: 1px solid rgba(46,204,113,0.2);
-    color: var(--success);
-    font-size: 12px;
-    font-weight: 700;
-    padding: 10px 18px;
-    border-radius: 30px;
-  }
-
-  .safety-box {
-    background: linear-gradient(135deg, rgba(231,76,60,0.06), rgba(231,76,60,0.02));
-    border: 1px solid rgba(231,76,60,0.18);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 24px;
-  }
-  .safety-title { font-size: 15px; font-weight: 800; color: #ff9f9f; margin-bottom: 8px; }
-  .safety-text { font-size: 14px; color: #c8dde8; line-height: 1.55; }
-
-  .note-box {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 16px;
-    padding: 22px;
-    margin-bottom: 24px;
-  }
-  .note-title { font-size: 16px; font-weight: 800; color: var(--text-muted); margin-bottom: 12px; }
-  .note-text { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 10px; }
-  .note-list { list-style: none; padding-left: 0; }
-  .note-list li {
-    padding: 6px 0 6px 22px;
-    position: relative;
-    font-size: 14px;
-    color: var(--text-muted);
-  }
-  .note-list li::before {
-    content: "";
-    position: absolute;
-    left: 0; top: 12px;
-    width: 8px; height: 8px;
-    background: #3498db;
-    border-radius: 50%;
-  }
-
-  .footer {
-    text-align: center;
-    padding: 30px 0 40px;
-  }
-  .company { font-size: 15px; color: var(--text-muted); font-weight: 700; margin-bottom: 6px; }
-  .phone { font-size: 20px; color: var(--accent); font-weight: 900; margin-bottom: 18px; letter-spacing: 0.5px; }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  .reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s;
-  }
-  .modal-overlay.show { opacity: 1; pointer-events: all; }
-  .modal {
-    background: linear-gradient(135deg, #1a2f3d, #0d2137);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 24px;
-    padding: 40px;
-    max-width: 420px;
-    width: 90%;
-    text-align: center;
-    transform: scale(0.9) translateY(20px);
-    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-  }
-  .modal-overlay.show .modal { transform: scale(1) translateY(0); }
-  .modal-icon {
-    width: 70px; height: 70px;
-    background: linear-gradient(135deg, var(--success), #27ae60);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 32px;
-    box-shadow: 0 10px 30px rgba(46,204,113,0.3);
-    animation: modal-pop 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  @keyframes modal-pop {
-    0% { transform: scale(0); }
-    70% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-  }
-  .modal h3 { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
-  .modal p { color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
-  .modal-btn {
-    background: linear-gradient(135deg, var(--success), #27ae60);
-    color: #fff;
-    border: none;
-    padding: 14px 32px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.3s;
-  }
-
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-    color: #fff;
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 14px;
-    box-shadow: 0 10px 30px rgba(231,76,60,0.3);
-    z-index: 999;
-    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    pointer-events: none;
-    white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
-  .spinner {
-    display: inline-block;
-    width: 20px; height: 20px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    vertical-align: middle;
-    margin-right: 10px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  @media (max-width: 480px) {
-    h1 { font-size: 28px; }
-    .subheadline { font-size: 15px; }
-    .section { padding: 20px; }
-    body { padding: 12px; }
-    .modal { padding: 28px 20px; }
-  }
-</style>
-</head>
-<body>
-
-<div class="bg-mesh">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-</div>
-
-<div class="container">
-
-  <div class="reveal">
-    <div class="badge">Exclusive for Attendees</div>
-    <h1>Refer a Friend & Share the Savings</h1>
-    <p class="subheadline">
-      Know someone who'd love to save on luxury travel? Refer them to our private presentation and they'll receive the <strong>same exclusive travel certificate</strong> you did.
-    </p>
-  </div>
-
-  <!-- Voucher List -->
-  <div class="section reveal">
-    <div class="section-title"><span class="icon">🎁</span> Travel Certificates Your Friend Can Choose From</div>
-    <ul class="voucher-list">
-      <li>
-        <strong>5-Day / 4-Night Cruise Certificate for 2</strong> — Featured option. Carnival, Royal Caribbean, Norwegian or Princess. Unlimited buffet + Vegas-style shows nightly. No onboard sales presentation.
-        <span class="validity-tag">✓ Valid for 24 months</span>
-      </li>
-      <li>
-        <strong>6-Day / 5-Night Hawaii Hotel Certificate for 2</strong> — Oahu, world-famous Waikiki Beach. Marriott, Hyatt, Hilton, IHG & Wyndham.
-        <span class="validity-tag">✓ Valid for 18 months</span>
-      </li>
-      <li>
-        <strong>6-Day / 5-Night All-Inclusive Puerto Plata Beachfront Resort</strong> — Dominican Republic. 2 adults + 2 children (12 & under). Unlimited meals, drinks & resort activities. Lifestyle Tropical Beach Resort & Spa.
-        <span class="validity-tag">✓ Valid for 18 months</span>
-      </li>
-      <li>
-        <strong>Mexico Getaway</strong> — Cancun, Riviera Maya, Puerto Vallarta (6D/5N) or Cabo San Lucas (5D/4N). All-inclusive options available.
-        <span class="validity-tag">✓ Valid for 18 months</span>
-      </li>
-      <li>
-        <strong>4-Day / 3-Night Luxury U.S. Hotel Stay for 2</strong> — 35+ U.S. destinations. Marriott, Hilton, Hyatt, Wyndham & more.
-        <span class="validity-tag">✓ Valid for 18 months</span>
-      </li>
-    </ul>
-    <p style="font-size:14px;color:var(--accent);margin-top:16px;font-weight:700;">
-      💰 Plus a $100 Rewards Voucher when they join on laptop, desktop, or tablet.
-    </p>
-  </div>
-
-  <!-- Referrer Info -->
-  <div class="section reveal referrer-section">
-    <div class="section-title"><span class="icon">👤</span> Who Is Referring?</div>
-    <div class="form-group">
-      <label>Your Full Name</label>
-      <input type="text" id="referrer-name" placeholder="Enter your full name" required>
-    </div>
-  </div>
-
-  <!-- Referred Friends -->
-  <div class="section reveal">
-    <div class="section-title"><span class="icon">👥</span> Who Are You Referring?</div>
-    <p style="font-size:14px;color:var(--text-muted);margin-bottom:18px;line-height:1.5;">
-      Add as many friends as you'd like. We'll reach out to each one with a private invitation.
-    </p>
-    <div id="referred-container"></div>
-    <button type="button" class="add-referral-btn" onclick="addReferredCard()">+ Add Another Friend</button>
-  </div>
-
-  <!-- Date & Time Pickers -->
-  <div class="section reveal">
-    <div class="section-title"><span class="icon">📅</span> Preferred Presentation Date & Time</div>
-    <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px;">
-      Pick when your friends should attend. Sessions run <strong>2:00 PM – 8:15 PM ET</strong>.
-    </p>
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+  
+  try {
+    const data = JSON.parse(e.postData.contents);
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    const timestamp = new Date();
     
-    <div class="form-group">
-      <label>Select Date</label>
-      <select id="date-select" required>
-        <option value="" disabled selected>Loading available dates...</option>
-      </select>
-    </div>
-    
-    <div class="form-group">
-      <label>Your Time Zone</label>
-      <select id="timezone-select" required>
-        <option value="" disabled selected>Select your time zone...</option>
-        <option value="ET">Eastern (EDT)</option>
-        <option value="CT">Central (CDT)</option>
-        <option value="MT">Mountain (MDT)</option>
-        <option value="PT">Pacific (PDT)</option>
-        <option value="AK">Alaska (AKDT)</option>
-        <option value="HI">Hawaii (HST)</option>
-      </select>
-    </div>
-    
-    <div class="form-group">
-      <label>Preferred Session Time</label>
-      <select id="time-select" required>
-        <option value="" disabled selected>Select your time zone first...</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Safety -->
-  <div class="safety-box reveal">
-    <div class="safety-title">🚫 Safety First</div>
-    <div class="safety-text">
-      For their safety and the quality of the session, we cannot accept joiners who are driving. Please remind your friends to be stationary and in a quiet environment during the presentation.
-    </div>
-  </div>
-
-  <!-- Note -->
-  <div class="note-box reveal">
-    <div class="note-title">🗒️ Note from the Host</div>
-    <div class="note-text">During the webinar, there will be a brief audience survey to help us better understand our attendees and improve future sessions. This survey is for research and audience profiling purposes only. Your responses will NOT affect your ability to attend or receive your travel certificate.</div>
-    <div class="note-text">✅ The survey may include general questions such as:</div>
-    <ul class="note-list">
-      <li>Combined household annual income (you, your partner, and anyone contributing to the household) — typically $50,000+</li>
-      <li>U.S. or Canadian residency status</li>
-    </ul>
-  </div>
-
-  <!-- Submit -->
-  <div class="reveal">
-    <button type="button" class="submit-btn" id="submit-btn" onclick="submitForm()">
-      <span id="btn-text">Submit Referrals →</span>
-    </button>
-    <div class="reassure">
-      <div class="pill">✓ No Timeshare</div>
-      <div class="pill">✓ No Membership Obligation</div>
-      <div class="pill">✓ 45 Minutes Only</div>
-    </div>
-  </div>
-
-  <div class="footer reveal">
-    <p class="company">Aloha Hawaii Tours and Travel</p>
-    <p class="phone">📞 808-4826-330</p>
-  </div>
-
-</div>
-
-<!-- Success Modal -->
-<div class="modal-overlay" id="success-modal">
-  <div class="modal">
-    <div class="modal-icon">✓</div>
-    <h3>Referrals Submitted!</h3>
-    <p>Thanks for spreading the word. We'll reach out to your friends with a private invitation. They'll receive the same exclusive travel certificate offer you enjoyed.</p>
-    <button class="modal-btn" onclick="closeModal()">Awesome</button>
-  </div>
-</div>
-
-<!-- Toast -->
-<div class="toast" id="toast"></div>
-
-<script>
-  // ===================== TIMEZONE & CALENDAR =====================
-  const TIMEZONE_OFFSETS = {
-    'ET': -4, 'CT': -5, 'MT': -6, 'PT': -7, 'AK': -8, 'HI': -10
-  };
-  const ET_SLOTS = ['14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
-  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-  let selectedDate = null;
-  let todayAvailable = false;
-  let referredCount = 0;
-
-  function getETNow() {
-    const now = new Date();
-    const formatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: 'America/New_York',
-      year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: false
+    data.referredFriends.forEach(friend => {
+      sheet.appendRow([
+        timestamp,
+        data.referrerName,
+        data.preferredDate,
+        data.timezone,
+        data.sessionTime,
+        friend.firstName,
+        friend.lastName,
+        friend.email,
+        friend.phone,
+        "Pending"
+      ]);
     });
-    const parts = formatter.formatToParts(now);
-    const get = (t) => parts.find(p => p.type === t).value;
-    return new Date(`${get('year')}-${get('month')}-${get('day')}T${get('hour')}:${get('minute')}:${get('second')}`);
-  }
-
-  function formatDateLabel(date, isToday) {
-    return `${isToday ? 'Today' : 'Tomorrow'} — ${DAYS[date.getDay()]}, ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-  }
-
-  function formatTime(hour24, tzCode) {
-    const h = parseInt(hour24);
-    const offset = TIMEZONE_OFFSETS[tzCode];
-    const etOffset = -4;
-    const diff = etOffset - offset;
-    const localH = (h - diff + 24) % 24;
-    const ampm = localH >= 12 ? 'PM' : 'AM';
-    const displayH = localH % 12 === 0 ? 12 : localH % 12;
-    return `${displayH}:00 ${ampm}`;
-  }
-
-  function initCalendar() {
-    const etNow = getETNow();
-    const etTimeVal = etNow.getHours() * 60 + etNow.getMinutes();
-    const cutoffTime = 20 * 60 + 15;
     
-    const today = new Date(etNow);
-    const tomorrow = new Date(etNow);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    const dateSelect = document.getElementById('date-select');
-    dateSelect.innerHTML = '<option value="" disabled selected>Select your date...</option>';
-
-    if (etTimeVal < cutoffTime) {
-      todayAvailable = true;
-      const opt = document.createElement('option');
-      opt.value = today.toISOString().split('T')[0];
-      opt.textContent = formatDateLabel(today, true);
-      opt.dataset.isToday = 'true';
-      dateSelect.appendChild(opt);
-    }
+    sendEmailNotification(data, timestamp);
     
-    const opt2 = document.createElement('option');
-    opt2.value = tomorrow.toISOString().split('T')[0];
-    opt2.textContent = formatDateLabel(tomorrow, false);
-    opt2.dataset.isToday = 'false';
-    dateSelect.appendChild(opt2);
-  }
-
-  function getAvailableSlotsForDate(dateValue, isToday, etNow) {
-    if (!isToday) return ET_SLOTS;
-    const currentTimeVal = etNow.getHours() * 60 + etNow.getMinutes();
-    return ET_SLOTS.filter(slot => {
-      const [h, m] = slot.split(':').map(Number);
-      return (h * 60 + m) > currentTimeVal + 30;
-    });
-  }
-
-  function updateTimeSlots() {
-    const tzSelect = document.getElementById('timezone-select');
-    const timeSelect = document.getElementById('time-select');
-    const dateSelect = document.getElementById('date-select');
-    
-    const tz = tzSelect.value;
-    const dateOpt = dateSelect.selectedOptions[0];
-    
-    if (!tz || !dateOpt || !dateOpt.value) {
-      timeSelect.innerHTML = '<option value="" disabled selected>Select your time zone and date first...</option>';
-      return;
-    }
-
-    const isToday = dateOpt.dataset.isToday === 'true';
-    const etNow = getETNow();
-    const availableSlots = getAvailableSlotsForDate(dateOpt.value, isToday, etNow);
-
-    timeSelect.innerHTML = '<option value="" disabled selected>Select your time...</option>';
-    
-    if (availableSlots.length === 0) {
-      const opt = document.createElement('option');
-      opt.value = "";
-      opt.textContent = "No sessions available for this date";
-      opt.disabled = true;
-      timeSelect.appendChild(opt);
-      showToast("No remaining sessions for this date. Please select tomorrow.");
-      return;
-    }
-
-    availableSlots.forEach(slot => {
-      const opt = document.createElement('option');
-      opt.value = slot + ' ET';
-      opt.textContent = `${formatTime(slot, tz)} (${slot.replace(':00','')} ET)`;
-      timeSelect.appendChild(opt);
-    });
-  }
-
-  // ===================== REFERRED CARDS =====================
-  function addReferredCard() {
-    referredCount++;
-    const container = document.getElementById('referred-container');
-    const card = document.createElement('div');
-    card.className = 'referred-card';
-    card.id = `referred-${referredCount}`;
-    card.innerHTML = `
-      <div class="card-header">
-        <span class="card-number">Friend #${referredCount}</span>
-        <button type="button" class="remove-btn" onclick="removeReferredCard(${referredCount})">Remove</button>
-      </div>
-      <div class="form-group">
-        <label>First Name</label>
-        <input type="text" name="referred_first_${referredCount}" placeholder="Friend's first name" required>
-      </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" name="referred_last_${referredCount}" placeholder="Friend's last name" required>
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" name="referred_email_${referredCount}" placeholder="friend@example.com" required>
-      </div>
-      <div class="form-group" style="margin-bottom:0;">
-        <label>Mobile Number</label>
-        <input type="tel" name="referred_phone_${referredCount}" placeholder="(555) 123-4567" required>
-      </div>
-    `;
-    container.appendChild(card);
-    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
-  }
-
-  function removeReferredCard(id) {
-    const card = document.getElementById(`referred-${id}`);
-    if (card) {
-      card.style.opacity = '0';
-      card.style.transform = 'translateX(20px)';
-      setTimeout(() => card.remove(), 300);
-    }
-  }
-
-  // ===================== FORM SUBMISSION =====================
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw48TUG5_PVwd1odaGgagTHY5xAspy4QkEDyS5W8NaQgPCU75lmdISIwoM7gZewBvlHlQ/exec';
-
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 4000);
-  }
-
-  function showModal() {
-    document.getElementById('success-modal').classList.add('show');
-  }
-
-  function closeModal() {
-    document.getElementById('success-modal').classList.remove('show');
-    document.getElementById('referrer-name').value = '';
-    document.getElementById('referred-container').innerHTML = '';
-    document.getElementById('date-select').selectedIndex = 0;
-    document.getElementById('timezone-select').selectedIndex = 0;
-    document.getElementById('time-select').innerHTML = '<option value="" disabled selected>Select your time zone and date first...</option>';
-    referredCount = 0;
-    addReferredCard();
-    initCalendar();
-  }
-
-  async function submitForm() {
-    const referrerName = document.getElementById('referrer-name').value.trim();
-    if (!referrerName) {
-      showToast('Please enter your full name.');
-      document.getElementById('referrer-name').focus();
-      return;
-    }
-
-    const dateSelect = document.getElementById('date-select');
-    const tzSelect = document.getElementById('timezone-select');
-    const timeSelect = document.getElementById('time-select');
-
-    if (!dateSelect.value) {
-      showToast('Please select a date.');
-      dateSelect.focus();
-      return;
-    }
-    if (!tzSelect.value) {
-      showToast('Please select your time zone.');
-      tzSelect.focus();
-      return;
-    }
-    if (!timeSelect.value) {
-      showToast('Please select a session time.');
-      timeSelect.focus();
-      return;
-    }
-
-    const cards = document.querySelectorAll('.referred-card');
-    if (cards.length === 0) {
-      showToast('Please add at least one friend to refer.');
-      return;
-    }
-
-    const referredFriends = [];
-    let hasEmpty = false;
-
-    cards.forEach((card) => {
-      const first = card.querySelector('input[name^="referred_first_"]').value.trim();
-      const last = card.querySelector('input[name^="referred_last_"]').value.trim();
-      const email = card.querySelector('input[name^="referred_email_"]').value.trim();
-      const phone = card.querySelector('input[name^="referred_phone_"]').value.trim();
-
-      if (!first || !last || !email || !phone) {
-        hasEmpty = true;
-        if (!first) card.querySelector('input[name^="referred_first_"]').focus();
-        else if (!last) card.querySelector('input[name^="referred_last_"]').focus();
-        else if (!email) card.querySelector('input[name^="referred_email_"]').focus();
-        else card.querySelector('input[name^="referred_phone_"]').focus();
-        return;
-      }
-      referredFriends.push({ firstName: first, lastName: last, email, phone });
-    });
-
-    if (hasEmpty) {
-      showToast('Please fill in all friend details.');
-      return;
-    }
-
-    const payload = {
-      referrerName,
-      preferredDate: dateSelect.options[dateSelect.selectedIndex].text,
-      preferredDateValue: dateSelect.value,
-      timezone: tzSelect.value,
-      sessionTime: timeSelect.value,
-      referredFriends,
-      submittedAt: new Date().toISOString()
-    };
-
-    const submitBtn = document.getElementById('submit-btn');
-    const btnText = document.getElementById('btn-text');
-    submitBtn.classList.add('loading');
-    btnText.innerHTML = '<span class="spinner"></span> Submitting...';
-
-    try {
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: { 'Content-Type': 'application/json' }
+    // CORS headers included
+    return ContentService.createTextOutput(JSON.stringify({ success: true }))
+      .setMimeType(ContentService.MimeType.JSON)
+      .setHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
       });
-
-      if (response.ok) {
-        showModal();
-      } else {
-        throw new Error('Server error');
-      }
-    } catch (err) {
-      showToast('Submission failed. Please try again or contact us directly.');
-      console.error(err);
-    } finally {
-      submitBtn.classList.remove('loading');
-      btnText.textContent = 'Submit Referrals →';
-    }
+      
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({ success: false, error: error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON)
+      .setHeaders({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      });
+  } finally {
+    lock.releaseLock();
   }
+}
 
-  // ===================== INIT =====================
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('active');
+// CORS preflight handler — THIS IS THE KEY FIX
+function doOptions(e) {
+  return ContentService.createTextOutput('')
+    .setHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
     });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
 
-  document.getElementById('timezone-select').addEventListener('change', updateTimeSlots);
-  document.getElementById('date-select').addEventListener('change', updateTimeSlots);
+function sendEmailNotification(data, timestamp) {
+  const friendCount = data.referredFriends.length;
+  const friendList = data.referredFriends.map((f, i) => 
+    `${i + 1}. ${f.firstName} ${f.lastName} — ${f.email} — ${f.phone}`
+  ).join('\n');
+  
+  const subject = `🔔 New Referral: ${data.referrerName} referred ${friendCount} friend${friendCount > 1 ? 's' : ''}`;
+  
+  const body = `
+New referral submission received!
 
-  addReferredCard();
-  initCalendar();
-</script>
+📅 Submitted: ${timestamp.toLocaleString('en-US', { timeZone: 'America/New_York' })} ET
 
-</body>
-</html>
+👤 REFERRER
+Name: ${data.referrerName}
+Preferred Date: ${data.preferredDate}
+Timezone: ${data.timezone}
+Session Time: ${data.sessionTime}
+
+👥 REFERRED FRIENDS (${friendCount})
+${friendList}
+
+---
+View all submissions: ${SpreadsheetApp.getActiveSpreadsheet().getUrl()}
+  `;
+  
+  MailApp.sendEmail({
+    to: YOUR_EMAIL,
+    subject: subject,
+    body: body,
+    name: "Aloha Hawaii Referrals"
+  });
+}
+
+function doGet(e) {
+  return ContentService.createTextOutput("Referral endpoint is active")
+    .setMimeType(ContentService.MimeType.TEXT)
+    .setHeaders({
+      'Access-Control-Allow-Origin': '*'
+    });
+}

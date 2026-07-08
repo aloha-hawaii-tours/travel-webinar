@@ -299,16 +299,6 @@
     background: rgba(241,196,15,0.05);
   }
 
-  /* Date/Time selects - same style as main form */
-  .date-time-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  @media (max-width: 480px) {
-    .date-time-grid { grid-template-columns: 1fr; }
-  }
-
   .submit-btn {
     width: 100%;
     padding: 20px;
@@ -520,7 +510,6 @@
     .modal { padding: 28px 20px; }
   }
 </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -540,7 +529,7 @@
     </p>
   </div>
 
-  <!-- Voucher List (simple, no images) -->
+  <!-- Voucher List -->
   <div class="section reveal">
     <div class="section-title"><span class="icon">🎁</span> Travel Certificates Your Friend Can Choose From</div>
     <ul class="voucher-list">
@@ -595,14 +584,14 @@
     <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px;">
       Pick when your friends should attend. Sessions run <strong>2:00 PM – 8:15 PM ET</strong>.
     </p>
-
+    
     <div class="form-group">
       <label>Select Date</label>
       <select id="date-select" required>
         <option value="" disabled selected>Loading available dates...</option>
       </select>
     </div>
-
+    
     <div class="form-group">
       <label>Your Time Zone</label>
       <select id="timezone-select" required>
@@ -612,361 +601,4 @@
         <option value="MT">Mountain (MDT)</option>
         <option value="PT">Pacific (PDT)</option>
         <option value="AK">Alaska (AKDT)</option>
-        <option value="HI">Hawaii (HST)</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>Preferred Session Time</label>
-      <select id="time-select" required>
-        <option value="" disabled selected>Select your time zone first...</option>
-      </select>
-    </div>
-  </div>
-
-  <!-- Safety -->
-  <div class="safety-box reveal">
-    <div class="safety-title">🚫 Safety First</div>
-    <div class="safety-text">
-      For their safety and the quality of the session, we cannot accept joiners who are driving. Please remind your friends to be stationary and in a quiet environment during the presentation.
-    </div>
-  </div>
-
-  <!-- Note -->
-  <div class="note-box reveal">
-    <div class="note-title">🗒️ Note from the Host</div>
-    <div class="note-text">During the webinar, there will be a brief audience survey to help us better understand our attendees and improve future sessions. This survey is for research and audience profiling purposes only. Your responses will NOT affect your ability to attend or receive your travel certificate.</div>
-    <div class="note-text">✅ The survey may include general questions such as:</div>
-    <ul class="note-list">
-      <li>Combined household annual income (you, your partner, and anyone contributing to the household) — typically $50,000+</li>
-      <li>U.S. or Canadian residency status</li>
-    </ul>
-  </div>
-
-  <!-- Submit -->
-  <div class="reveal">
-    <button type="button" class="submit-btn" id="submit-btn" onclick="submitForm()">
-      <span id="btn-text">Submit Referrals →</span>
-    </button>
-    <div class="reassure">
-      <div class="pill">✓ No Timeshare</div>
-      <div class="pill">✓ No Membership Obligation</div>
-      <div class="pill">✓ 45 Minutes Only</div>
-    </div>
-  </div>
-
-  <div class="footer reveal">
-    <p class="company">Aloha Hawaii Tours and Travel</p>
-    <p class="phone">📞 808-4826-330</p>
-  </div>
-
-</div>
-
-<!-- Success Modal -->
-<div class="modal-overlay" id="success-modal">
-  <div class="modal">
-    <div class="modal-icon">✓</div>
-    <h3>Referrals Submitted!</h3>
-    <p>Thanks for spreading the word. We'll reach out to your friends with a private invitation. They'll receive the same exclusive travel certificate offer you enjoyed.</p>
-    <button class="modal-btn" onclick="closeModal()">Awesome</button>
-  </div>
-</div>
-
-<!-- Toast -->
-<div class="toast" id="toast"></div>
-
-<script>
-  // ===================== TIMEZONE & CALENDAR (same as main form) =====================
-  const TIMEZONE_OFFSETS = {
-    'ET': -4, 'CT': -5, 'MT': -6, 'PT': -7, 'AK': -8, 'HI': -10
-  };
-  const ET_SLOTS = ['14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
-  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-  let selectedDate = null;
-  let todayAvailable = false;
-  let referredCount = 0;
-
-  function getETNow() {
-    const now = new Date();
-    const formatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: 'America/New_York',
-      year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit',
-      hour12: false
-    });
-    const parts = formatter.formatToParts(now);
-    const get = (t) => parts.find(p => p.type === t).value;
-    return new Date(`${get('year')}-${get('month')}-${get('day')}T${get('hour')}:${get('minute')}:${get('second')}`);
-  }
-
-  function formatDateLabel(date, isToday) {
-    return `${isToday ? 'Today' : 'Tomorrow'} — ${DAYS[date.getDay()]}, ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-  }
-
-  function formatTime(hour24, tzCode) {
-    const h = parseInt(hour24);
-    const offset = TIMEZONE_OFFSETS[tzCode];
-    const etOffset = -4;
-    const diff = etOffset - offset;
-    const localH = (h - diff + 24) % 24;
-    const ampm = localH >= 12 ? 'PM' : 'AM';
-    const displayH = localH % 12 === 0 ? 12 : localH % 12;
-    return `${displayH}:00 ${ampm}`;
-  }
-
-  function initCalendar() {
-    const etNow = getETNow();
-    const etTimeVal = etNow.getHours() * 60 + etNow.getMinutes();
-    const cutoffTime = 20 * 60 + 15;
-
-    const today = new Date(etNow);
-    const tomorrow = new Date(etNow);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-
-    const dateSelect = document.getElementById('date-select');
-    dateSelect.innerHTML = '<option value="" disabled selected>Select your date...</option>';
-
-    if (etTimeVal < cutoffTime) {
-      todayAvailable = true;
-      const opt = document.createElement('option');
-      opt.value = today.toISOString().split('T')[0];
-      opt.textContent = formatDateLabel(today, true);
-      opt.dataset.isToday = 'true';
-      dateSelect.appendChild(opt);
-    }
-
-    const opt2 = document.createElement('option');
-    opt2.value = tomorrow.toISOString().split('T')[0];
-    opt2.textContent = formatDateLabel(tomorrow, false);
-    opt2.dataset.isToday = 'false';
-    dateSelect.appendChild(opt2);
-  }
-
-  function getAvailableSlotsForDate(dateValue, isToday, etNow) {
-    if (!isToday) return ET_SLOTS;
-    const currentTimeVal = etNow.getHours() * 60 + etNow.getMinutes();
-    return ET_SLOTS.filter(slot => {
-      const [h, m] = slot.split(':').map(Number);
-      return (h * 60 + m) > currentTimeVal + 30;
-    });
-  }
-
-  function updateTimeSlots() {
-    const tzSelect = document.getElementById('timezone-select');
-    const timeSelect = document.getElementById('time-select');
-    const dateSelect = document.getElementById('date-select');
-
-    const tz = tzSelect.value;
-    const dateOpt = dateSelect.selectedOptions[0];
-
-    if (!tz || !dateOpt || !dateOpt.value) {
-      timeSelect.innerHTML = '<option value="" disabled selected>Select your time zone and date first...</option>';
-      return;
-    }
-
-    const isToday = dateOpt.dataset.isToday === 'true';
-    const etNow = getETNow();
-    const availableSlots = getAvailableSlotsForDate(dateOpt.value, isToday, etNow);
-
-    timeSelect.innerHTML = '<option value="" disabled selected>Select your time...</option>';
-
-    if (availableSlots.length === 0) {
-      const opt = document.createElement('option');
-      opt.value = "";
-      opt.textContent = "No sessions available for this date";
-      opt.disabled = true;
-      timeSelect.appendChild(opt);
-      showToast("No remaining sessions for this date. Please select tomorrow.");
-      return;
-    }
-
-    availableSlots.forEach(slot => {
-      const opt = document.createElement('option');
-      opt.value = slot + ' ET';
-      opt.textContent = `${formatTime(slot, tz)} (${slot.replace(':00','')} ET)`;
-      timeSelect.appendChild(opt);
-    });
-  }
-
-  // ===================== REFERRED CARDS =====================
-  function addReferredCard() {
-    referredCount++;
-    const container = document.getElementById('referred-container');
-    const card = document.createElement('div');
-    card.className = 'referred-card';
-    card.id = `referred-${referredCount}`;
-    card.innerHTML = `
-      <div class="card-header">
-        <span class="card-number">Friend #${referredCount}</span>
-        <button type="button" class="remove-btn" onclick="removeReferredCard(${referredCount})">Remove</button>
-      </div>
-      <div class="form-group">
-        <label>First Name</label>
-        <input type="text" name="referred_first_${referredCount}" placeholder="Friend's first name" required>
-      </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" name="referred_last_${referredCount}" placeholder="Friend's last name" required>
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" name="referred_email_${referredCount}" placeholder="friend@example.com" required>
-      </div>
-      <div class="form-group" style="margin-bottom:0;">
-        <label>Mobile Number</label>
-        <input type="tel" name="referred_phone_${referredCount}" placeholder="(555) 123-4567" required>
-      </div>
-    `;
-    container.appendChild(card);
-    setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
-  }
-
-  function removeReferredCard(id) {
-    const card = document.getElementById(`referred-${id}`);
-    if (card) {
-      card.style.opacity = '0';
-      card.style.transform = 'translateX(20px)';
-      setTimeout(() => card.remove(), 300);
-    }
-  }
-
-  // ===================== FORM SUBMISSION =====================
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw48TUG5_PVwd1odaGgagTHY5xAspy4QkEDyS5W8NaQgPCU75lmdISIwoM7gZewBvlHlQ/exec';
-
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 4000);
-  }
-
-  function showModal() {
-    document.getElementById('success-modal').classList.add('show');
-  }
-
-  function closeModal() {
-    document.getElementById('success-modal').classList.remove('show');
-    document.getElementById('referrer-name').value = '';
-    document.getElementById('referred-container').innerHTML = '';
-    document.getElementById('date-select').selectedIndex = 0;
-    document.getElementById('timezone-select').selectedIndex = 0;
-    document.getElementById('time-select').innerHTML = '<option value="" disabled selected>Select your time zone and date first...</option>';
-    referredCount = 0;
-    addReferredCard();
-    initCalendar();
-  }
-
-  async function submitForm() {
-    const referrerName = document.getElementById('referrer-name').value.trim();
-    if (!referrerName) {
-      showToast('Please enter your full name.');
-      document.getElementById('referrer-name').focus();
-      return;
-    }
-
-    const dateSelect = document.getElementById('date-select');
-    const tzSelect = document.getElementById('timezone-select');
-    const timeSelect = document.getElementById('time-select');
-
-    if (!dateSelect.value) {
-      showToast('Please select a date.');
-      dateSelect.focus();
-      return;
-    }
-    if (!tzSelect.value) {
-      showToast('Please select your time zone.');
-      tzSelect.focus();
-      return;
-    }
-    if (!timeSelect.value) {
-      showToast('Please select a session time.');
-      timeSelect.focus();
-      return;
-    }
-
-    const cards = document.querySelectorAll('.referred-card');
-    if (cards.length === 0) {
-      showToast('Please add at least one friend to refer.');
-      return;
-    }
-
-    const referredFriends = [];
-    let hasEmpty = false;
-
-    cards.forEach((card) => {
-      const first = card.querySelector('input[name^="referred_first_"]').value.trim();
-      const last = card.querySelector('input[name^="referred_last_"]').value.trim();
-      const email = card.querySelector('input[name^="referred_email_"]').value.trim();
-      const phone = card.querySelector('input[name^="referred_phone_"]').value.trim();
-
-      if (!first || !last || !email || !phone) {
-        hasEmpty = true;
-        if (!first) card.querySelector('input[name^="referred_first_"]').focus();
-        else if (!last) card.querySelector('input[name^="referred_last_"]').focus();
-        else if (!email) card.querySelector('input[name^="referred_email_"]').focus();
-        else card.querySelector('input[name^="referred_phone_"]').focus();
-        return;
-      }
-      referredFriends.push({ firstName: first, lastName: last, email, phone });
-    });
-
-    if (hasEmpty) {
-      showToast('Please fill in all friend details.');
-      return;
-    }
-
-    const payload = {
-      referrerName,
-      preferredDate: dateSelect.options[dateSelect.selectedIndex].text,
-      preferredDateValue: dateSelect.value,
-      timezone: tzSelect.value,
-      sessionTime: timeSelect.value,
-      referredFriends,
-      submittedAt: new Date().toISOString()
-    };
-
-    const submitBtn = document.getElementById('submit-btn');
-    const btnText = document.getElementById('btn-text');
-    submitBtn.classList.add('loading');
-    btnText.innerHTML = '<span class="spinner"></span> Submitting...';
-
-    try {
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      if (response.ok) {
-        showModal();
-      } else {
-        throw new Error('Server error');
-      }
-    } catch (err) {
-      showToast('Submission failed. Please try again or contact us directly.');
-      console.error(err);
-    } finally {
-      submitBtn.classList.remove('loading');
-      btnText.textContent = 'Submit Referrals →';
-    }
-  }
-
-  // ===================== INIT =====================
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('active');
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  document.getElementById('timezone-select').addEventListener('change', updateTimeSlots);
-  document.getElementById('date-select').addEventListener('change', updateTimeSlots);
-
-  addReferredCard();
-  initCalendar();
-</script>
-
-</body>
-</html>
+        <option value="HI">Hawaii

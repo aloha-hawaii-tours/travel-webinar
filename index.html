@@ -192,7 +192,6 @@
   }
   .subheadline strong { color: #fff; font-weight: 600; }
 
-  /* Duration highlight pill */
   .duration-pill {
     display: inline-flex;
     align-items: center;
@@ -211,9 +210,7 @@
     0%, 100% { box-shadow: 0 0 0 0 rgba(241,196,15,0.2); }
     50% { box-shadow: 0 0 20px 4px rgba(241,196,15,0.1); }
   }
-  .duration-pill .clock-icon {
-    font-size: 18px;
-  }
+  .duration-pill .clock-icon { font-size: 18px; }
 
   .hero-wrap {
     perspective: 1000px;
@@ -704,7 +701,7 @@
     border: 1px solid rgba(255,255,255,0.1);
     border-radius: 24px;
     padding: 40px;
-    max-width: 420px;
+    max-width: 480px;
     width: 90%;
     text-align: center;
     transform: scale(0.9) translateY(20px);
@@ -730,7 +727,63 @@
     100% { transform: scale(1); }
   }
   .modal h3 { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
-  .modal p { color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px; }
+  .modal p { color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
+
+  .zoom-box {
+    background: rgba(52,152,219,0.08);
+    border: 1px solid rgba(52,152,219,0.25);
+    border-radius: 14px;
+    padding: 18px;
+    margin: 18px 0;
+    text-align: left;
+  }
+  .zoom-box-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #3498db;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .zoom-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #c8dde8;
+    line-height: 1.5;
+  }
+  .zoom-row:last-child { margin-bottom: 0; }
+  .zoom-row .zoom-label {
+    color: #5a7a8a;
+    font-weight: 700;
+    min-width: 90px;
+    flex-shrink: 0;
+  }
+  .zoom-row a {
+    color: #3498db;
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .zoom-row a:hover { text-decoration: underline; }
+
+  .no-show-notice {
+    background: rgba(231,76,60,0.08);
+    border: 1px solid rgba(231,76,60,0.2);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: #ff9f9f;
+    line-height: 1.6;
+  }
+  .no-show-notice strong {
+    color: #fff;
+    font-weight: 700;
+  }
+
   .modal-btn {
     background: linear-gradient(135deg, var(--success), #27ae60);
     color: #fff;
@@ -742,6 +795,7 @@
     cursor: pointer;
     font-family: inherit;
     transition: all 0.3s;
+    margin-top: 8px;
   }
   .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(46,204,113,0.3); }
 
@@ -785,9 +839,10 @@
     .date-btn { padding: 14px 8px; font-size: 13px; }
     .date-btn .day-label { font-size: 16px; }
     .duration-pill { font-size: 13px; padding: 8px 16px; }
+    .zoom-row { flex-direction: column; gap: 2px; }
+    .zoom-row .zoom-label { min-width: auto; }
   }
 </style>
-<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -816,7 +871,6 @@
     <div class="badge">Private Invitation</div>
     <h1>See How Smart Travelers Save 70%+ on Luxury Vacations</h1>
 
-    <!-- Duration highlight pill -->
     <div class="duration-pill">
       <span class="clock-icon">⏱️</span>
       <span>Only <strong>45 minutes</strong> — quick, valuable, no fluff</span>
@@ -940,10 +994,7 @@
     <div class="section-title"><span class="icon">📝</span> Reserve Your Seat</div>
 
     <form id="reservation-form" action="https://formspree.io/f/mgojqdal" method="POST">
-      <!-- Honeypot for spam protection -->
       <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
-
-      <!-- Email subject line -->
       <input type="hidden" name="_subject" value="New Presentation Reservation">
 
       <div class="form-group">
@@ -1052,7 +1103,30 @@
   <div class="modal">
     <div class="modal-icon">✓</div>
     <h3>You're All Set!</h3>
-    <p>Your reservation has been submitted. Check your email for confirmation details and your Zoom link. We look forward to seeing you!</p>
+    <p>Your reservation has been submitted. We look forward to seeing you at your scheduled time.</p>
+
+    <div class="no-show-notice">
+      <strong>⚠️ Important:</strong> We have exclusively reserved this spot for you. A no-show may affect your eligibility to participate in future sessions. Please mark your calendar and join us at your selected time.
+    </div>
+
+    <div class="zoom-box">
+      <div class="zoom-box-title">📹 Your Zoom Details</div>
+      <div class="zoom-row">
+        <span class="zoom-label">🌐 Link:</span>
+        <a href="https://zoom.us/j/8088001202" target="_blank">https://zoom.us/j/8088001202</a>
+      </div>
+      <div class="zoom-row">
+        <span class="zoom-label">🔒 Passcode:</span>
+        <span>8080</span>
+      </div>
+      <div class="zoom-row">
+        <span class="zoom-label">🆔 Meeting ID:</span>
+        <span>8088 0012 02</span>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--text-dim);margin-bottom:4px;">💾 Save these details — we'll also email them to you before your session begins.</p>
+
     <button class="modal-btn" onclick="closeModal()">Got It</button>
   </div>
 </div>
@@ -1060,16 +1134,36 @@
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<script>
-  // ===================== TIMEZONE & CALENDAR LOGIC =====================
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
+<script>
+  // ===================== EMAILJS SETUP =====================
+  // 1. Sign up at emailjs.com
+  // 2. Add an Email Service (Gmail or SMTP) and connect nicko@travelaht.com
+  // 3. Create an Email Template with these settings:
+  //    Subject: ✅ Your Seat Is Reserved - Zoom details inside
+  //    From Name: Aloha Hawaii Tours
+  //    From Email: nicko@travelaht.com
+  //    To Email: {{to_email}}
+  //    Body: Paste your uploaded HTML email template (the dark-themed one)
+  // 4. Copy your Public Key, Service ID, and Template ID below
+  const EMAILJS_PUBLIC_KEY = 'PM8XDeoJVazDmZ3iA';
+  const EMAILJS_SERVICE_ID = 'service_fa9zv5q';
+  const EMAILJS_TEMPLATE_ID = 'template_44a3pgs';
+
+  if (EMAILJS_PUBLIC_KEY && !EMAILJS_PUBLIC_KEY.includes('YOUR_')) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+
+  // ===================== TIMEZONE & CALENDAR LOGIC =====================
   const TIMEZONE_OFFSETS = {
-    'ET': -4,   // EDT
-    'CT': -5,   // CDT
-    'MT': -6,   // MDT
-    'PT': -7,   // PDT
-    'AK': -8,   // AKDT
-    'HI': -10   // HST (no DST)
+    'ET': -4,
+    'CT': -5,
+    'MT': -6,
+    'PT': -7,
+    'AK': -8,
+    'HI': -10
   };
 
   const ET_SLOTS = ['14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
@@ -1093,17 +1187,11 @@
   }
 
   function formatDateShort(date) {
-    const month = MONTHS[date.getMonth()];
-    const day = date.getDate();
-    return `${month} ${day}`;
+    return `${MONTHS[date.getMonth()]} ${date.getDate()}`;
   }
 
   function formatDateFull(date) {
-    const dayName = DAYS[date.getDay()];
-    const month = MONTHS[date.getMonth()];
-    const day = date.getDate();
-    const year = date.getFullYear();
-    return `${dayName}, ${month} ${day}, ${year}`;
+    return `${DAYS[date.getDay()]}, ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   }
 
   function formatTime(hour24, tzCode) {
@@ -1119,20 +1207,16 @@
 
   function initCalendar() {
     const etNow = getETNow();
-    const etHour = etNow.getHours();
-    const etMin = etNow.getMinutes();
-    const etTimeVal = etHour * 60 + etMin;
-    const cutoffTime = 20 * 60 + 15; // 8:15 PM ET
+    const etTimeVal = etNow.getHours() * 60 + etNow.getMinutes();
+    const cutoffTime = 20 * 60 + 15;
 
     const today = new Date(etNow);
     const tomorrow = new Date(etNow);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    // Set labels
     document.getElementById('today-label').textContent = formatDateShort(today);
     document.getElementById('tomorrow-label').textContent = formatDateShort(tomorrow);
 
-    // Check if today is available
     todayAvailable = etTimeVal < cutoffTime;
 
     const btnToday = document.getElementById('btn-today');
@@ -1147,8 +1231,6 @@
       btnToday.title = "";
       selectDate('today');
     }
-
-    return { etNow, today, tomorrow };
   }
 
   function selectDate(which) {
@@ -1182,22 +1264,16 @@
 
   function getAvailableSlotsForDate(isToday, etNow) {
     if (!isToday) return ET_SLOTS;
-
-    const etHour = etNow.getHours();
-    const etMin = etNow.getMinutes();
-    const currentTimeVal = etHour * 60 + etMin;
-
+    const currentTimeVal = etNow.getHours() * 60 + etNow.getMinutes();
     return ET_SLOTS.filter(slot => {
       const [h, m] = slot.split(':').map(Number);
-      const slotTimeVal = h * 60 + m;
-      return slotTimeVal > currentTimeVal + 30;
+      return (h * 60 + m) > currentTimeVal + 30;
     });
   }
 
   function updateTimeSlots() {
     const tzSelect = document.getElementById('timezone-select');
     const timeSelect = document.getElementById('time-select');
-
     const tz = tzSelect.value;
 
     if (!tz || !selectedDate) {
@@ -1231,13 +1307,8 @@
   }
 
   // ===================== UI INTERACTIONS =====================
-
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('active');
-      }
-    });
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
@@ -1263,9 +1334,7 @@
       const y = (e.clientY - rect.top) / rect.height - 0.5;
       card.style.transform = `translateY(-6px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg)`;
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
   });
 
   let seats = 14;
@@ -1281,12 +1350,8 @@
 
   function updateUrgency() {
     const etNow = getETNow();
-    const etHour = etNow.getHours();
-    const etMin = etNow.getMinutes();
-    const etSec = etNow.getSeconds();
-    const currentVal = etHour * 3600 + etMin * 60 + etSec;
+    const currentVal = etNow.getHours() * 3600 + etNow.getMinutes() * 60 + etNow.getSeconds();
     const cutoffVal = 20 * 3600 + 15 * 60;
-
     let targetVal, label;
     if (currentVal < cutoffVal) {
       targetVal = cutoffVal;
@@ -1295,16 +1360,12 @@
       targetVal = 14 * 3600 + 24 * 3600;
       label = "Next session opens in";
     }
-
     let diff = targetVal - currentVal;
     if (diff < 0) diff += 24 * 3600;
-
     const h = Math.floor(diff / 3600);
     const m = Math.floor((diff % 3600) / 60);
     const s = diff % 60;
-
-    document.getElementById('urgency-text').innerHTML = 
-      `${label} <span class="countdown">${h}h ${m}m ${s}s</span>`;
+    document.getElementById('urgency-text').innerHTML = `${label} <span class="countdown">${h}h ${m}m ${s}s</span>`;
   }
   setInterval(updateUrgency, 1000);
   updateUrgency();
@@ -1324,7 +1385,6 @@
   }
 
   // ===================== FORM HANDLING =====================
-
   const form = document.getElementById('reservation-form');
   const submitBtn = document.getElementById('submit-btn');
   const btnText = document.getElementById('btn-text');
@@ -1359,6 +1419,42 @@
       });
 
       if (response.ok) {
+        // ===================== SEND AUTO-CONFIRMATION EMAIL =====================
+        const email = formData.get('email');
+        const firstName = formData.get('first_name');
+        const lastName = formData.get('last_name');
+        const date = formData.get('date');
+        const tz = formData.get('timezone');
+        const sessionTimeRaw = formData.get('session_time');
+        const certificate = formData.get('certificate');
+        const device = formData.get('device');
+
+        const slot = sessionTimeRaw ? sessionTimeRaw.replace(' ET', '') : '';
+        const localTime = slot ? formatTime(slot, tz) : '';
+
+        if (EMAILJS_PUBLIC_KEY && !EMAILJS_PUBLIC_KEY.includes('YOUR_')) {
+          try {
+            await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+              to_email: email,
+              first_name: firstName,
+              last_name: lastName,
+              date: date,
+              session_time: localTime,
+              timezone: tz,
+              certificate: certificate,
+              device: device,
+              zoom_link: 'https://zoom.us/j/8088001202',
+              zoom_passcode: '8080',
+              zoom_id: '8088 0012 02'
+            });
+            console.log('Confirmation email sent successfully');
+          } catch (emailErr) {
+            console.error('EmailJS error:', emailErr);
+          }
+        } else {
+          console.warn('EmailJS not configured. Skipping confirmation email.');
+        }
+
         showModal();
         form.reset();
         initCalendar();
